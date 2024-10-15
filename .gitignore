@@ -1,0 +1,5 @@
+# matlab specific
+.asv
+
+# ignore data files
+*.dat
