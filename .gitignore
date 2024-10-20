@@ -3,3 +3,7 @@
 
 # ignore data files
 *.dat
+
+*DS_Store*
+*.log
+*MACOSX*
