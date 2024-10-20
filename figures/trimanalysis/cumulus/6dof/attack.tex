@@ -1,0 +1,129 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={elevator deflection ($\si{\degree}$)},
+ylabel={angle of attack ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={\thisrow{phi} < -2.6 ? nan : 180/3.14*y},
+unbounded coords=jump,
+xmin=-60,
+legend columns=-1,
+legend to name=legend-sixdof,
+]
+\addplot[trimStable, forget plot,
+x filter/.expression={\thisrow{stab}==1 ? 180/3.14*x : nan},
+%mark start,
+] 
+table[x=eta, y=alpha]{\data/trimanalysis/cumulus/6dof.dat};
+
+\addlegendpair[trimStable]{stable trim}
+
+\addlegendspace
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab}==1 && \thisrow{eta} < -.26 ? 180/3.14*x : nan},
+%embrace={(0.east) -- (1.east) node[midway,right] {$B$}},
+] 
+table[x=eta, y=alpha]{\data/trimanalysis/cumulus/6dof.dat};
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab}==1 && \thisrow{eta} > -.26 ? 180/3.14*x : nan},
+] 
+table[x=eta, y=alpha]{\data/trimanalysis/cumulus/6dof.dat};
+
+\addlegendpair[trimUnstable]{unstable trim}
+\label{plot:trimanalysis-unstable}
+
+\addlegendspace
+
+\addplot[trimOrbit, forget plot,
+x filter/.expression={180/3.14*x},
+]
+table[x=eta, y=alpha]{\data/trimanalysis/cumulus/6dof/limitcycles.dat};
+
+\addlegendpair[trimOrbit]{limit cycle}
+\label{plot:trimanalysis-limitcycle}
+
+\addlegendspace
+
+\addplot[trimHopf, forget plot,
+x filter/.expression={\thisrow{stab}==1 && \thisrow{ustab}==1 && \thisrow{eta} < -.26 ? 180/3.14*x : nan},
+] 
+table[x=eta, y=alpha]{\data/trimanalysis/cumulus/6dof.dat};
+
+\addlegendpair[trimHopf]{Hopf bifurcation}
+\label{plot:trimanalysis-hopf}
+
+\addlegendspace
+
+\addplot[trimSaddle, forget plot,
+x filter/.expression={\thisrow{stab}==1 && \thisrow{ustab}==1 && \thisrow{eta} > -.26 ? 180/3.14*x : nan},
+] 
+table[x=eta, y=alpha]{\data/trimanalysis/cumulus/6dof.dat};
+
+\addlegendpair[trimSaddle]{saddle-node bifurcation}
+\label{plot:trimanalysis-saddle}
+
+
+%% prepare for magnification
+\node[coordinate] (anchor) at (-15, 22.5) {};
+
+\node[coordinate] (magn min) at (-27, 9) {};
+\node[coordinate] (magn max) at (-21, 20) {};
+\node[draw, densely dotted] (magn) [fit=(magn min) (magn max), inner sep=0mm] {};
+%%%%
+
+\end{axis}
+
+\begin{axis}[%
+width=0.25\FigWidth,
+height=0.4\FigHeight,
+at={(anchor)},
+anchor=south west,
+axis background/.style={fill=white},
+scale only axis,
+xtick={-30,-26,-22},
+minor tick num=1,
+grid=both,
+y filter/.expression={180/3.14*y},
+unbounded coords=jump,
+xmin=-28,
+xmax=-20,
+ymin=9,
+ymax=20,
+extra description/.code={
+	\node[coordinate] (aux north west) at (0,1) {};
+	\node[coordinate] (aux south east) at (1,0) {};
+}
+]
+\addplot[trimStable, forget plot,
+x filter/.expression={\thisrow{stab}==1 ? 180/3.14*x : nan},
+] 
+table[x=eta, y=alpha]{\data/trimanalysis/cumulus/6dof.dat};
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab}==1 ? 180/3.14*x : nan},
+] 
+table[x=eta, y=alpha]{\data/trimanalysis/cumulus/6dof.dat};
+
+\addplot[trimOrbit, forget plot,
+x filter/.expression={180/3.14*x},
+]
+table[x=eta, y=alpha]{\data/trimanalysis/cumulus/6dof/limitcycles.dat};
+
+\addplot[trimHopf, forget plot,
+x filter/.expression={\thisrow{stab}==1 && \thisrow{ustab}==1 && \thisrow{eta} < -.26 ? 180/3.14*x : nan},
+] 
+table[x=eta, y=alpha]{\data/trimanalysis/cumulus/6dof.dat};
+
+\end{axis}
+
+\draw[dotted] (magn.north west) -- (aux north west);
+\draw[dotted] (magn.south east) -- (aux south east);
+
+\end{tikzpicture}%

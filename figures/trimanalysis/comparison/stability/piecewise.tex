@@ -1,0 +1,161 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={air speed ($\si{\metre\per\second}$)},
+ylabel={angle of attack ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={180/3.14*y},
+unbounded coords=jump,
+xmax=45.72,
+legend cell align=left,
+legend columns=7,
+%transpose legend,
+legend to name=legend-trimanalysis-stability,
+]
+%% legend
+%\addlegendpair[gtmData]{GTM trim (stable)}
+%
+%\addlegendpair{$\quad$}
+%
+%\addlegendpair[gtmData, mark=x]{GTM trim (unstable)}
+%
+%\addlegendpair{$\quad$}
+
+\addlegendpair[coeffPW, black, solid]{stable trim}
+
+\addlegendpair{$\quad$}
+
+\addlegendpair[coeffPW, black, loosely dashed]{unstable trim}
+
+\addlegendpair{$\quad$}
+
+\addlegendpair[trimHopf]{critical point}
+
+\addlegendpair{$\quad$}
+
+\addlegendpair[trimStart]{starting point}
+%%%%
+
+
+%% GTM data
+%\addplot[gtmData,
+%	x filter/.expression={\thisrow{stab} != 1 ? nan : x}
+%	] 
+%	table[x=V, y=alpha]{\data/trimanalysis/gtm.dat};
+%	\label{plot:trimanalysis-gtm}
+%
+%\addplot[gtmData, mark=x,
+%	x filter/.expression={\thisrow{ustab} != 1 ? nan : x}
+%	] 
+%	table[x=V, y=alpha]{\data/trimanalysis/gtm.dat};
+%%%%
+
+
+%% piecewise fit
+\addplot[trimSurface, coeffPW, loosely dashed,
+	x filter/.expression={\thisrow{ustab} != 1 ? nan : x},
+	] 
+	table[x=V, y=alpha]{\data/trimanalysis/piecewise.dat};
+
+\addplot[trimSurface, coeffPW, solid,
+	x filter/.expression={\thisrow{stab} != 1 ? nan : x},
+	] 
+	table[x=V, y=alpha]{\data/trimanalysis/piecewise.dat};
+
+\addplot[trimHopf, PW, solid,
+	x filter/.expression={\thisrow{stab} != 1 || \thisrow{ustab} != 1 ? nan : x},
+	] 
+	table[x=V, y=alpha]{\data/trimanalysis/piecewise.dat};
+%%%%
+
+
+%% start (piecewise fit)
+\addplot[color=black, trimStart, 
+	skip coords between index={1}{10000},
+	]
+	table[x=V, y=alpha]{\data/trimanalysis/piecewise.dat};
+	\label{plot:trimanalysis-start}
+%%%%
+
+
+%% prepare for magnification
+\node[coordinate] (anchor) at (30, 30) {};
+
+\node[coordinate] (magn min) at (27.5, 5) {};
+\node[coordinate] (magn max) at (32.5, 15) {};
+\node[draw, densely dotted] (magn) [fit=(magn min) (magn max), inner sep=0mm] {};
+%%%%
+
+\end{axis}
+
+
+\begin{axis}[%
+width=0.3\FigWidth,
+height=0.4\FigHeight,
+at={(anchor)},
+anchor=south west,
+axis background/.style={fill=white},
+scale only axis,
+%xtick={-5,0,5},
+ytick={5,10,15},
+minor tick num=1,
+grid=both,
+y filter/.expression={180/3.14*y},
+unbounded coords=jump,
+xmin=27.5,
+xmax=32.5,
+ymin=5,
+ymax=15,
+extra description/.code={
+	\node[coordinate] (aux north west) at (0,1) {};
+	\node[coordinate] (aux south east) at (1,0) {};
+}
+]
+%% GTM data
+%\addplot[gtmData,
+%	x filter/.expression={\thisrow{stab} != 1 ? nan : x}
+%	] 
+%	table[x=V, y=alpha]{\data/trimanalysis/gtm.dat};
+%	\label{plot:trimanalysis-gtm}
+%
+%\addplot[gtmData, mark=x,
+%	x filter/.expression={\thisrow{ustab} != 1 ? nan : x}
+%	] 
+%	table[x=V, y=alpha]{\data/trimanalysis/gtm.dat};
+%%%%
+
+
+%% piecewise fit
+\addplot[trimSurface, coeffPW, loosely dashed,
+	x filter/.expression={\thisrow{ustab} != 1 || \thisrow{eta} > 0 ? nan : x},
+	] 
+	table[x=V, y=alpha]{\data/trimanalysis/piecewise.dat};
+
+\addplot[trimSurface, coeffPW, solid,
+	x filter/.expression={\thisrow{stab} != 1 ? nan : x},
+	] 
+	table[x=V, y=alpha]{\data/trimanalysis/piecewise.dat};
+
+\addplot[trimHopf, PW, solid,
+	x filter/.expression={\thisrow{stab} != 1 || \thisrow{ustab} != 1 ? nan : x},
+	] 
+	table[x=V, y=alpha]{\data/trimanalysis/piecewise.dat};
+%%%%
+\end{axis}
+
+\draw[dotted] (magn.north west) -- (aux north west);
+\draw[dotted] (magn.south east) -- (aux south east);
+
+\end{tikzpicture}%

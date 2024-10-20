@@ -1,0 +1,43 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xtick={0,5,...,30},
+ztick={-60,-30,...,90},
+ytick={-1.5,-1,...,0.5},
+yticklabel={\pgfmathparse{-1*\tick} $\pgfmathprintnumber{\pgfmathresult}$},
+xlabel={airspeed ($\si{\metre\per\second}$)},
+zlabel={path inclination ($\si{\degree}$)},
+ylabel={$t$},
+grid=major,
+x filter/.expression={x + 11.3631},
+z filter/.expression={z - 2.2834},
+%zmin=-65,
+%zmax=60,
+xmin=4,
+xmax=21,
+view={10}{15},
+plot box ratio={1 1.5 1},
+3d box=complete,
+]
+\foreach \Ib in {0, 0.05, 0.1, 0.15, 0.2}
+	\addplot3[contour gnuplot, safePW, forget plot,
+	mesh/rows=2601, mesh/cols=51,
+	safeSet3d=\Ib,
+	y filter/.expression={-\Ib},
+	z filter/.expression={rawy - 2.2834},
+	]
+	table[x=V,y=gamma,z=Ib,meta=Lya]{\data/safeset/stableset/cumulus/reachability/it5/phugoid.dat};
+
+
+\addplot3[safeEqu]
+coordinates{ (0,0,0) };
+
+\addplot3[safeEqu, mark=o]
+coordinates{ (-3.05,-1,-33.2539) };
+
+\end{axis}
+\end{tikzpicture}

@@ -1,0 +1,35 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xmin=0,
+xmax=95,
+ymin=0,
+xlabel={angle of attack ($\si{\degree}$)},
+ylabel={drag coefficient ($\cdot$)},
+xmajorgrids,
+ymajorgrids,
+unbounded coords=discard,
+x filter/.expression={180/3.14*x},
+]
+\addplot[scatter, only marks,
+y filter/.expression={\thisrow{alt} < 20 || \thisrow{thr} != 0 || abs(\thisrow{q}) > 0.1 ? nan : y},
+point meta={180/3.14*\thisrow{eta}},
+forget plot,
+]
+table[x=alpha, y=Cdrag, meta=eta]{\data/forceestimation/cumulus.dat};
+
+
+\addplot[scatter, only marks, mark=triangle*,
+y filter/.expression={\thisrow{alpha} < 2.617994e-01 || \thisrow{eta} != -6.981317e-01 ? nan : y},
+point meta={180/3.14*\thisrow{eta}},
+forget plot,
+]
+table[x=alpha, y=Cdrag, meta=eta]{\data/identification/cumulus.dat};
+
+
+\end{axis}
+\end{tikzpicture}

@@ -1,0 +1,43 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xmin=-15,
+xmax=90,
+extra x ticks={16.1108},
+extra x tick labels={$\alpha_0$},% = \num{16.1}$},
+extra x tick style={major grid style={continuity}},
+extra y ticks={0},
+extra y tick style={major grid style={zerocons}},
+xtick={-15,0,...,90},
+xticklabels={-15,0,$$,30,45,60,75,90},
+ytick={-45,0,45},
+xlabel={angle of attack ($\si{\degree}$)},
+ylabel={side-slip angle ($\si{\degree}$)},
+zlabel={residuals \body{y}-axis ($\cdot$)},
+x filter/.expression={180/3.14*x},
+y filter/.expression={180/3.14*y},
+xmajorgrids,
+ymajorgrids,
+zmajorgrids,
+%restrict z to domain*=-0.25:0.5,
+%unbounded coords=jump,
+%zmin=-0.1,
+%zmax=0.25,
+ymin=-50,
+ymax=50,
+]
+\addplot3[resid3D,
+%z filter/.expression={\thisrow{xi}!=0 || \thisrow{eta}!=0 || \thisrow{zeta}!=0 ? nan : z},
+mark repeat=3,
+unbounded coords=discard,
+] 
+table[x=alpha, y=beta, z=Cy]{\data/identification/fullenvelope/residuals.dat};
+%\label{plot:identification-comparison-pw}
+%\addlegendentry{piece-wise fit}
+
+\end{axis}
+\end{tikzpicture}

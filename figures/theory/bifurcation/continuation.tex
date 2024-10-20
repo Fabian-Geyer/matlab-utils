@@ -1,0 +1,51 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xtick=0,
+ytick=0,
+ztick=0,
+xlabel={$\mu_1^\ast$},
+ylabel={$\mu_2^\ast$},
+zlabel={$x^\ast$},
+grid=major,
+xmin=-6,
+xmax=9,
+%legend columns=2,
+legend cell align=left,
+legend pos=outer north east,
+]
+\foreach \p in {-4,0,4}
+{
+\addplot3[trimStable, forget plot,
+x filter/.expression={\thisrow{stab} != 1 ? nan : \p + x},
+] 
+table[x=p, z=x, y expr={\p}]{\data/theory/bifurcation/saddlenode.dat};
+
+\addplot3[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab} != 1 ? nan : \p + x},
+]
+table[x=p, z=x, y expr={\p}]{\data/theory/bifurcation/saddlenode.dat};
+
+\addplot3[trimSaddle, forget plot,
+x filter/.expression={\thisrow{stab} != 1 || \thisrow{ustab} != 1 ? nan : \p + x},
+]
+table[x=p, z=x, y expr={\p}]{\data/theory/bifurcation/saddlenode.dat};
+}
+
+\addlegendpair[trimStable]{stable}
+\addlegendpair[trimUnstable]{unstable}
+\addlegendpair[trimSaddle]{SN}
+
+
+\addplot3[trimCritical,
+%x filter/.expression={\thisrow{stab} != 1 || \thisrow{ustab} != 1 ? nan : x},
+]
+table[x expr=sign(\thisrow{x})*\thisrow{p}, z expr={0}, y expr={x}]{\data/theory/bifurcation/saddlenode.dat};
+\addlegendentry{critical}
+
+\end{axis}
+\end{tikzpicture}%

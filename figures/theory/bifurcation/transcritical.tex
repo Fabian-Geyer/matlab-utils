@@ -1,0 +1,48 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xtick=0,
+ytick=0,
+xlabel={$\mu^\ast$},
+ylabel={$x^\ast$},
+grid=major,
+xmin=-5,
+xmax=5,
+legend cell align=left,
+legend pos=north west,
+]
+\addplot[trimStable,
+x filter/.expression={\thisrow{stab} != 1 ? nan : x},
+] 
+table[x=p, y=x]{\data/theory/bifurcation/transcritical-1.dat};
+\addlegendentry{stable}
+
+\addplot[trimUnstable,
+x filter/.expression={\thisrow{ustab} != 1 ? nan : x},
+]
+table[x=p, y=x]{\data/theory/bifurcation/transcritical-1.dat};
+\addlegendentry{unstable}
+
+\addplot[trimStable, forget plot,
+x filter/.expression={\thisrow{stab} != 1 ? nan : x},
+] 
+table[x=p, y=x]{\data/theory/bifurcation/transcritical-2.dat};
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab} != 1 ? nan : x},
+] 
+table[x=p, y=x]{\data/theory/bifurcation/transcritical-2.dat};
+
+
+\addplot[trimSaddle,
+x filter/.expression={\thisrow{stab} != 1 || \thisrow{ustab} != 1 ? nan : x},
+]
+table[x=p, y=x]{\data/theory/bifurcation/transcritical-1.dat};
+\addlegendentry{SN}
+
+\end{axis}
+\end{tikzpicture}%

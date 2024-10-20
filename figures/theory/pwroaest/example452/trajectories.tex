@@ -1,0 +1,39 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+extra x ticks={0},
+extra x tick style={major grid style={dashed, color=black}},
+xtick={-1.5,-1,...,1.5},
+ytick={-1.5,-1,...,1.5},
+xlabel={$x_1$},
+ylabel={$x_2$},
+xmajorgrids,
+ymajorgrids,
+ymin=-1.25,
+ymax=1.75,
+xmin=-1.75,
+xmax=1.25,
+restrict expr to domain={x^2+y^2}{0:10},
+%view={0}{90},
+unbounded coords=jump,
+cycle list name=color list,
+]
+\foreach \i in {1,2,...,29}
+{
+	\addplot+[safeRespStable,
+	y filter/.expression={\thisrow{stable} != 1 ? nan : y},
+	]
+	table[x=x1, y=x2]{\data/theory/pwroaest/example452/traj\i.dat};
+
+	\addplot+[safeRespUnstable,
+	y filter/.expression={\thisrow{stable} != 0 ? nan : y},
+	]
+	table[x=x1, y=x2]{\data/theory/pwroaest/example452/traj\i.dat};
+}
+
+\end{axis}
+\end{tikzpicture}

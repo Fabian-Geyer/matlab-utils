@@ -1,0 +1,116 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={air speed ($\si{\metre\per\second}$)},
+ylabel={thrust ($\si{\kilo\newton}$)},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={y/1000},
+xmin=13,
+xmax=45.72,
+]
+%% GTM data
+\addplot[gtmData,
+	] 
+	table[x=V, y=T]{\data/trimanalysis/gtm.dat};
+%%%%
+
+%% piecewise fit
+\addplot[trimSurface, coeffPW, dashdotdotted,
+	] 
+	table[x=V, y=T]{\data/trimanalysis/piecewise.dat};
+%%%%
+
+%% polynomial fit
+\addplot[trimSurface, coeffKDC, dashed,
+	] 
+	table[x=V, y=T]{\data/trimanalysis/poly.dat};
+%%%%
+
+%% CSB+2011 fit
+\addplot[trimSurface, coeffCSB, dashdotted,
+	] 
+	table[x=V, y=T]{\data/trimanalysis/chakraborty.dat};
+%%%%
+
+
+%% start (polynomial fit)
+\addplot[color=black, trimStart, 
+	skip coords between index={1}{10000},
+	]
+	table[x=V, y=T]{\data/trimanalysis/poly.dat};
+	\label{plot:trimanalysis-start}
+%%%%
+
+%% prepare for magnification
+\node[coordinate] (anchor) at (20, 0.47) {};
+
+\node[coordinate] (magn min) at (24, 0) {};
+\node[coordinate] (magn max) at (32.5, 0.15) {};
+\node[draw, densely dotted] (magn) [fit=(magn min) (magn max), inner sep=0mm] {};
+%%%%
+
+\end{axis}
+
+\begin{axis}[%
+width=0.5\FigWidth,
+height=0.3\FigHeight,
+at={(anchor)},
+anchor=south west,
+axis background/.style={fill=white},
+scale only axis,
+xtick={25,30},
+ytick={0,0.1},
+minor tick num=1,
+grid=both,
+y filter/.expression={y/1000},
+unbounded coords=jump,
+xmin=24,
+xmax=32.5,
+ymin=0,
+ymax=0.15,
+extra description/.code={
+	\node[coordinate] (aux south west) at (0,0) {};
+	\node[coordinate] (aux south east) at (1,0) {};
+}
+]
+%% GTM data
+\addplot[gtmData,
+	] 
+	table[x=V, y=T]{\data/trimanalysis/gtm.dat};
+%%%%
+
+%% piecewise fit
+\addplot[trimSurface, coeffPW, dashdotdotted,
+	] 
+	table[x=V, y=T]{\data/trimanalysis/piecewise.dat};
+%%%%
+
+%% polynomial fit
+\addplot[trimSurface, coeffKDC, dashed,
+	] 
+	table[x=V, y=T]{\data/trimanalysis/poly.dat};
+%%%%
+
+%% CSB+2011 fit
+\addplot[trimSurface, coeffCSB, dashdotted,
+	] 
+	table[x=V, y=T]{\data/trimanalysis/chakraborty.dat};
+%%%%
+\end{axis}
+
+\draw[dotted] (magn.south west) -- (aux south west);
+\draw[dotted] (magn.south east) -- (aux south east);
+
+\end{tikzpicture}%

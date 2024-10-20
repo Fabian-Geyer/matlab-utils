@@ -1,0 +1,23 @@
+\begin{tikzpicture}
+
+\begin{polaraxis}[
+	width=\FigWidth,
+	pgfpie,
+	extra x ticks={36,216},
+	extra x tick labels={
+		\pgfpielabel{\flushright LOC-I \SI{9}{\percent}},
+		\pgfpielabel{Other \SI{91}{\percent}}
+	},
+	xmin=36,
+	xmax=396,
+	x filter/.expression={36+x},
+]
+
+\pgfpietitle{Accidents by~category}
+
+
+\addpiewedge[pieLOCI]{9};
+
+
+\end{polaraxis}
+\end{tikzpicture}

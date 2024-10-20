@@ -1,0 +1,37 @@
+\begin{tikzpicture}
+
+\begin{semilogyaxis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={simulated time (\si{\second})},
+ylabel={residual norm ($\cdot$)},
+grid=major,
+xmin=0,
+xmax=10,
+legend columns=-1,
+legend to name=legend-control-details,
+]
+\addplot[mark only, mark=*, mark options={fill=mycolor2},
+mark repeat=10,
+forget plot,
+]
+table[x=time, y=res]{\data/control/spiral/closed/prediction.dat};
+
+\addlegendpair[mycolor2, line width=1pt, mark=*, mark options={fill=mycolor2}]{spiral recovery}
+
+\addlegendspace
+
+
+\addplot[mark only, mark=*, mark options={fill=mycolor3},
+mark repeat=10,
+forget plot,
+]
+table[x=time, y=res]{\data/control/oscspin/closed/prediction.dat};
+
+\addlegendpair[mycolor3, line width=1pt, mark=*, mark options={fill=mycolor3}]{spin recovery}
+
+
+\end{semilogyaxis}
+\end{tikzpicture}

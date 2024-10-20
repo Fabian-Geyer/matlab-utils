@@ -1,0 +1,57 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+extra y ticks={16.2949},
+extra y tick labels={$\alpha_0$},% = \num{16.1}$},
+extra y tick style={major grid style={dashed, color=black}},
+%xticklabels={-75,-60,-45,-30,-15,0,$$,30,45,60,75,90},
+xlabel={elevator deflection ($\si{\degree}$)},
+ylabel={angle of attack ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+x filter/.expression={x - 5},
+y filter/.expression={y + 3.2240},
+xmin=-10,
+xmax=0,
+ymin=-5,
+ymax=10,
+view={0}{90},
+point meta min=-200,
+point meta max=200,
+colormap/redyellow,
+]
+\addplot3[contour gnuplot, safeSetElps,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=eta,y=alpha,z=P]{\data/safeset/stableset/cumulus/discrete/elevator.dat};
+
+
+\addplot3[contour gnuplot, safePW, 
+z filter/.expression={y > 16.2949 ? nan : z},
+mesh/rows=100, mesh/cols=100,
+]
+table[x=eta,y=alpha,z=Lya]{\data/safeset/stableset/cumulus/discrete/elevator.dat};
+
+%\addplot3[contour gnuplot, safePW, dashdotdotted,
+%x filter/.expression={y < 16.2949 ? nan : x},
+%mesh/rows=100, mesh/cols=100,
+%]
+%table[x=eta,y=alpha,z=Lya-2]{\data/safeset/stableset/cumulus/discrete/elevator.dat};
+
+\addplot3[contour gnuplot, dashdotted,
+contour/levels={-60,-50,-40,-30,-20,-10,0,10,20,30},
+%z filter/.expression={z - 5},
+mesh/rows=100, mesh/cols=100,
+]
+table[x=eta,y=alpha,z=k]{\data/safeset/stableset/cumulus/discrete/elevator.dat};
+
+
+\addplot3[safeEqu]
+coordinates{ (0,0,0) };
+
+\end{axis}
+\end{tikzpicture}

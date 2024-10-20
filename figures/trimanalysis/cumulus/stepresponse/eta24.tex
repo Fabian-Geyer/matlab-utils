@@ -1,0 +1,64 @@
+\begin{tikzpicture}
+
+\begin{groupplot}[%
+group style={
+	group size=3 by 1,
+	horizontal sep=1pt,
+	y descriptions at=edge left,
+},
+width=0.27\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={time ($\si{\second}$)},
+ylabel={pitch angle ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={180/3.14*y},
+xmin=0,
+xmax=10,
+ymin=-35,
+ymax=44,
+legend pos=north east,
+%legend plot pos=none,
+legend cell align=right,
+cycle list name=color list,
+]
+\nextgroupplot[xtick={0,2,...,8}, cycle list shift=1,
+x filter/.expression={\thisrow{p2} != 0 ? nan : x},
+]
+\addplot+[stepRespLin,]
+table[x=time, y=Theta]{\data/trimanalysis/cumulus/stepresponse/linear/eta24.dat};
+\addlegendentry{$\kappa_{\dot{q}q} = 0$}
+
+\addplot+[stepRespInd,]
+table[x=time, y=Theta]{\data/trimanalysis/cumulus/stepresponse/induced/eta24.dat};
+\addlegendentry{$\lambda_{\alpha q} = 0$}
+
+
+\nextgroupplot[xtick={0,2,...,8}, cycle list shift=0,
+x filter/.expression={\thisrow{p2} != 1.5 ? nan : x},
+]
+\addplot+[stepRespLin,]
+table[x=time, y=Theta]{\data/trimanalysis/cumulus/stepresponse/linear/eta24.dat};
+\addlegendentry{$\kappa_{\dot{q}q} = 1.5$}
+
+\addplot+[stepRespInd,]
+table[x=time, y=Theta]{\data/trimanalysis/cumulus/stepresponse/induced/eta24.dat};
+\addlegendentry{$\lambda_{\alpha q} = 1.5$}
+
+
+\nextgroupplot[xtick={0,2,...,10}, cycle list shift=9,
+x filter/.expression={\thisrow{p2} != 5 ? nan : x},
+]
+\addplot+[stepRespLin,]
+table[x=time, y=Theta]{\data/trimanalysis/cumulus/stepresponse/linear/eta24.dat};
+\addlegendentry{$\kappa_{\dot{q}q} = 5$}
+
+\addplot+[stepRespInd,]
+table[x=time, y=Theta]{\data/trimanalysis/cumulus/stepresponse/induced/eta24.dat};
+\addlegendentry{$\lambda_{\alpha q} = 5$}
+
+
+\end{groupplot}
+\end{tikzpicture}

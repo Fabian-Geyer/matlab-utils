@@ -1,0 +1,30 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xmin=-15,
+xmax=95,
+xlabel={angle of attack ($\si{\degree}$)},
+ylabel={coefficient \body{x}-axis ($\cdot$)},
+xmajorgrids,
+ymajorgrids,
+ticklabel style={/pgf/number format/.cd,fixed,precision=2},
+x filter/.expression={\thisrow{eta}==0 ? 180/3.14*x : nan},
+%restrict y to domain*=-0.6:1.6,
+unbounded coords=discard,
+ymin=-0.1,
+ymax=0.1,
+]
+\addplot[cumulus, forget plot] 
+	table[x=alpha, y=Cx]{\data/identification/cumulus.dat};
+
+\addplot[coeffPoly, forget plot] 
+	table[x=alpha, y=Cx]{\data/identification/cumulus/polynomial.dat};
+\label{plot:identification-piecewise}
+
+
+\end{axis}
+\end{tikzpicture}

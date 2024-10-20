@@ -1,0 +1,53 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xtick=0,
+ytick=0,
+xlabel={$\xi$},
+ylabel={$\dot\xi$},
+grid=major,
+%xmin=-2.1,
+%xmax=2.1,
+%ymin=-3,
+%ymax=3,
+restrict x to domain=-2.5:2.5,
+restrict y to domain=-3:3,
+cycle list name=color list,
+legend cell align=left,
+legend pos=outer north east,
+]
+\addlegendpair[solid, blue, postaction={decorate}, decoration={markings, mark=at position .6 with {\arrow{stealth}}}]{stable}
+\addlegendpair[dashed, red, postaction={decorate}, decoration={markings, mark=at position .6 with {\arrow{stealth}}}]{unstable}
+
+\foreach \i in {1,2,3,4}
+{
+	\pgfplotsset{cycle list shift=1}
+	\addplot+[solid, %forget plot,
+	postaction={decorate},
+	decoration={markings,
+		mark=at position 0.25 with {\arrow{stealth}},
+		mark=at position 0.5 with {\arrow{stealth}},
+		mark=at position 0.75 with {\arrow{stealth}},
+		mark=at position 0.95 with {\arrow{stealth}},
+	},
+	]
+	table[x=x1, y=x2]{\data/theory/limitcycles/vanderpol/stable-\i.dat};
+	
+	\pgfplotsset{cycle list shift=-1}
+	\addplot+[dashed, %forget plot,
+	postaction={decorate},
+	decoration={markings,
+		mark=at position 0.25 with {\arrow{stealth}},
+%		mark=at position 0.5 with {\arrow{stealth}},
+		mark=at position 0.9 with {\arrow{stealth}}
+	},
+	]
+	table[x=x1, y=x2]{\data/theory/limitcycles/vanderpol/unstable-\i.dat};
+}
+
+\end{axis}
+\end{tikzpicture}%

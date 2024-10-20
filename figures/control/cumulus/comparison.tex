@@ -1,0 +1,52 @@
+\providecommand\legendempc{EMPC}
+\providecommand\legendrempc{r-EMPC}
+\providecommand\legendnmpc{NMPC}
+
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={time ($\si{\second}$)},
+ylabel={altitude ($\si{\metre}$)},
+xmajorgrids,
+ymajorgrids,
+xmin=0,
+xmax=10,
+ymin=-11,
+ymax=1,
+]
+\addplot[nmpcClosed, mycolor1,
+]
+table[x=time,y=alt]{\data/control/cumulus/empc/level.dat};
+\addlegendentry\legendempc
+
+\addplot[nmpcClosed, mycolor1, dotted,
+forget plot,
+]
+table[x=time,y=alt]{\data/control/cumulus/empc.dat};
+
+\addplot[nmpcClosed, mycolor3,
+]
+table[x=time,y=alt]{\data/control/cumulus/empc-regular/level.dat};
+\addlegendentry\legendrempc
+
+\addplot[nmpcClosed, mycolor3, dotted,
+forget plot,
+]
+table[x=time,y=alt]{\data/control/cumulus/empc-regular.dat};
+
+\addplot[nmpcClosed, mycolor2,
+]
+table[x=time,y=alt]{\data/control/cumulus/nmpc/level.dat};
+\addlegendentry\legendnmpc
+
+\addplot[nmpcClosed, mycolor2, dotted,
+forget plot,
+]
+table[x=time,y=alt]{\data/control/cumulus/nmpc.dat};
+
+\end{axis}
+\end{tikzpicture}

@@ -1,0 +1,61 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={air speed ($\si{\metre\per\second}$)},
+ylabel={angle of attack ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={\thisrow{eta} < -1.05 || \thisrow{eta} > 0.1135 ? nan : 180/3.14*y},
+unbounded coords=jump,
+xmin=5,
+ymax=46.5, %45.9554,
+legend columns=-1,
+legend to name=legend-linear
+]
+\addplot[trimStable,
+x filter/.expression={\thisrow{stab}==1 || \thisrow{eta} > -.26 ? x : nan},
+mark start,
+] 
+table[x=V, y=alpha]{\data/trimanalysis/cumulus/6dof.dat};
+\addlegendentry{stable trim conditions}
+
+
+%\addplot[trimUnstable, forget plot,
+%x filter/.expression={\thisrow{ustab}==1 && \thisrow{eta} > -.26 ? x : nan},
+%] 
+%table[x=V, y=alpha]{\data/trimanalysis/cumulus/6dof.dat};
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab}==1 && \thisrow{eta} < -.26 ? x : nan},
+embrace={(0.east) -- (1.east) node[midway,right] {$B^\prime$}},
+] 
+table[x=V, y=alpha]{\data/trimanalysis/cumulus/6dof.dat};
+
+
+\addlegendpair[trimUnstable]{unstable trim conditions}
+\label{plot:trimanalysis-unstable}
+
+
+\addplot[trimHopf,
+x filter/.expression={\thisrow{stab}==1 && \thisrow{ustab}==1 && \thisrow{eta} < -.26 ? x : nan},
+] 
+table[x=V, y=alpha]{\data/trimanalysis/cumulus/6dof.dat};
+\label{plot:trimanalysis-hopf}
+\addlegendentry{Hopf bifurcation}
+
+
+%\addplot[color=black, trimStart, 
+%	skip coords between index={1}{10000},
+%	]
+%	table[x=V, y=alpha]{\data/trimanalysis/cumulus/6dof.dat};
+%	\label{plot:trimanalysis-poly-start}
+\addlegendpair[trimStart]{starting point}
+\label{plot:trimanalysis-start}
+
+
+\end{axis}
+\end{tikzpicture}%

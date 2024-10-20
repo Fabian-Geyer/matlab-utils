@@ -1,0 +1,24 @@
+\begin{tikzpicture}
+
+\begin{polaraxis}[
+	width=\FigWidth,
+	pgfpie,
+	extra x ticks={0,180},
+	extra x tick labels={
+		\pgfpielabel{\flushright LOC-I \SI{49}{\percent}},
+		\pgfpielabel{Other \SI{51}{\percent}}
+	},
+	xmin=-90,
+	xmax=270,
+	x filter/.expression={x-90},
+]
+
+\pgfpietitle{Fatalities by~category}
+
+
+\addpiewedge[pieLOCI]{49}; 
+
+
+
+\end{polaraxis}
+\end{tikzpicture}

@@ -1,0 +1,55 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={elevator deflection ($\si{\degree}$)},
+ylabel={pitch rate ($\si{\degree\per\second}$)},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={\thisrow{phi} < -2.6 ? nan : 180/3.14*y},
+unbounded coords=jump,
+xmin=-60,
+]
+\addplot[trimStable,
+x filter/.expression={\thisrow{stab}==1 ? 180/3.14*x : nan},
+%mark start,
+] 
+table[x=eta, y=q]{\data/trimanalysis/cumulus/6dof.dat};
+
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab}==1 && \thisrow{eta} < -.26 ? 180/3.14*x : nan},
+%embrace={(0.east) -- (1.east) node[midway,right] {$B$}},
+] 
+table[x=eta, y=q]{\data/trimanalysis/cumulus/6dof.dat};
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab}==1 && \thisrow{eta} > -.26 ? 180/3.14*x : nan},
+] 
+table[x=eta, y=q]{\data/trimanalysis/cumulus/6dof.dat};
+
+\addplot[trimOrbit, forget plot,
+x filter/.expression={180/3.14*x},
+]
+table[x=eta, y=q]{\data/trimanalysis/cumulus/6dof/limitcycles.dat};
+
+\addplot[trimHopf,
+x filter/.expression={\thisrow{stab}==1 && \thisrow{ustab}==1 && \thisrow{eta} < -.26 ? 180/3.14*x : nan},
+] 
+table[x=eta, y=q]{\data/trimanalysis/cumulus/6dof.dat};
+
+\addplot[trimSaddle,
+x filter/.expression={\thisrow{stab}==1 && \thisrow{ustab}==1 && \thisrow{eta} > -.26 ? 180/3.14*x : nan},
+] 
+table[x=eta, y=q]{\data/trimanalysis/cumulus/6dof.dat};
+
+
+%\addlegendpair[trimStart]{starting point}
+%\label{plot:trimanalysis-start}
+
+
+\end{axis}
+\end{tikzpicture}%

@@ -1,0 +1,52 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xmin=5,
+xmax=30,
+xlabel={angle of attack ($\si{\degree}$)},
+ylabel={lift coefficient ($\cdot$)},
+xmajorgrids,
+ymajorgrids,
+x filter/.expression={\thisrow{eta}==0 ? 180/3.14*x : nan},
+restrict y to domain*=0.75:1.25,
+unbounded coords=discard,
+ymin=0.78,
+ymax=1.22,
+legend columns=-1,
+legend to name=legend-bump
+]
+\addplot[cumulus] 
+	table[x=alpha, y=Clift]{\data/identification/cumulus.dat};
+\addlegendentry{CFD data}
+
+\addlegendpair{$\quad$}
+
+\addplot[coeffBump] 
+	table[x=alpha, y=Clift]{\data/identification/cumulus/bump.dat};
+\label{plot:identification-bump}
+\addlegendentry{blended fit}
+
+\addlegendpair{$\quad$}
+
+\addplot[coeffPW1] 
+	table[x=alpha, y=Clift]{\data/identification/cumulus/piecewise/pre.dat};
+\addlegendentry{low-$\alpha$ domain}
+
+\addlegendpair{$\quad$}
+
+\addplot[coeffPW2] 
+	table[x=alpha, y=Clift]{\data/identification/cumulus/piecewise/post.dat};
+\addlegendentry{high-$\alpha$ domain}
+
+
+%\addplot[alpha0] table[x=alpha, y=Clift]{\data/identification/piecewise/alpha0.dat};
+%\label{plot:identification-piecewise-alpha0}
+%\addlegendentry{$\alpha_0$}
+
+
+\end{axis}
+\end{tikzpicture}

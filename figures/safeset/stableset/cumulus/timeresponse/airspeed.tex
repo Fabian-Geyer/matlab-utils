@@ -1,0 +1,68 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={time ($\si{\second}$)},
+ylabel={airspeed ($\si{\metre\per\second}$)},
+xmajorgrids,
+ymajorgrids,
+xmin=0,
+xmax=20,
+ymin=8,
+ymax=14.5,
+legend columns=7,
+legend cell align=left,
+legend to name=legend-stableset-timeresponse,
+]
+\addplot[nmpcClosed, mycolor3,
+]
+table[x=time,y=V]{\data/safeset/stableset/cumulus/control1/timeresponse/eta40.dat};
+\addlegendentry{linear control}
+
+\addlegendspace
+
+\addplot[nmpcClosed, mycolor4, 
+]
+table[x=time,y=V]{\data/safeset/stableset/cumulus/control3/timeresponse/eta40.dat};
+\addlegendentry{polynomial control}
+
+\addlegendspace
+
+\addplot[nmpcClosed, mycolor5, 
+]
+table[x=time,y=V]{\data/safeset/stableset/cumulus/pwcontrol/timeresponse/eta40.dat};
+\addlegendentry{piecewise control}
+
+\addlegendspace
+
+\addplot[nmpcClosed, mycolor6,
+]
+table[x=time,y=V]{\data/safeset/stableset/cumulus/reachability/timeresponse/eta40.dat};
+\addlegendentry{reachability}
+
+%\addlegendspace
+
+\addplot[nmpcClosed, mycolor1, dashed,
+]
+table[x=time,y=V]{\data/safeset/stableset/cumulus/damping/timeresponse/eta40.dat};
+\addlegendentry{pitch-damper}
+
+\addlegendspace
+
+\addplot[nmpcClosed, mycolor2,
+]
+table[x=time,y=V]{\data/safeset/stableset/cumulus/lqr/timeresponse/eta40.dat};
+\addlegendentry{LQR feedback}
+
+\addlegendspace
+
+\addplot[nmpcTarget,
+]
+table[x=time,y=V]{\data/safeset/stableset/cumulus/target.dat};
+\addlegendentry{trim condition}
+
+\end{axis}
+\end{tikzpicture}

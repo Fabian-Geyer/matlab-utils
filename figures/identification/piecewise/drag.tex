@@ -1,0 +1,35 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xmin=-15,
+xmax=90,
+xlabel={angle of attack ($\si{\degree}$)},
+ylabel={drag coefficient ($\cdot$)},
+xmajorgrids,
+ymajorgrids,
+x filter/.expression={\thisrow{eta}==0 ? 180/3.14*x : nan},
+%restrict y to domain*=-1.1:3.1,
+unbounded coords=discard,
+ymin=-1,
+ymax=3
+]
+\addplot[gtmData, forget plot] 
+	table[x=alpha, y=Cdrag]{\data/identification/gtm.dat};
+
+\addplot[coeffPW] table[x=alpha, y=Cdrag]{\data/identification/piecewise.dat};
+
+\addplot[coeffPW1] table[x=alpha, y=Cdrag]{\data/identification/piecewise/pre.dat};
+
+\addplot[coeffPW2] table[x=alpha, y=Cdrag]{\data/identification/piecewise/post.dat};
+
+%\addplot[alpha0] table[x=alpha, y=Cdrag]{\data/identification/piecewise/alpha0.dat};
+%\label{plot:identification-piecewise-alpha0}
+%\addlegendentry{$\alpha_0$}
+
+
+\end{axis}
+\end{tikzpicture}

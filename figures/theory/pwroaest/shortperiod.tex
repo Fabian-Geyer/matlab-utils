@@ -1,0 +1,43 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+extra x ticks={12.8855},
+extra x tick labels={},% = \num{16.1}$},
+extra x tick style={major grid style={dashed, color=black}},
+%xtick={-75,-15,...,90},
+ytick={-150,-75,...,150},
+xlabel={$x_1$},
+ylabel={$x_2$},
+xmajorgrids,
+ymajorgrids,
+ymin=-185,
+ymax=185,
+xmin=-80,
+xmax=45,
+view={0}{90},
+colormap/jet,
+]
+\addplot3[contour gnuplot, safeSetElps,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=alpha,y=q,z=P]{\data/safeset/stableset/shortperiod/multiple.dat};
+
+
+\addplot3[contour gnuplot, safeSet, solid,
+x filter/.expression={x > 12.8855 ? nan : x},
+mesh/rows=100, mesh/cols=100,
+]
+table[x=alpha,y=q,z=Lya-1]{\data/safeset/stableset/shortperiod/multiple.dat};
+
+\addplot3[contour gnuplot, safeSet, solid,
+x filter/.expression={x < 12.8855 ? nan : x},
+mesh/rows=100, mesh/cols=100,
+]
+table[x=alpha,y=q,z=Lya-2]{\data/safeset/stableset/shortperiod/multiple.dat};
+
+\end{axis}
+\end{tikzpicture}

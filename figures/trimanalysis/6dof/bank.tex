@@ -1,0 +1,49 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={airspeed ($\si{\metre\per\second}$)},
+ylabel={bank\only<article>{-angle} ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+x filter/.expression={\thisrow{plot} != 2 ? nan : x},
+y filter/.expression={180/3.14*y},
+xmin=24.3840,
+xmax=45.72,
+ymin=-20,
+ymax=20,
+]
+% level flight
+\addplot[trimLevel, forget plot,
+	x filter/.expression={\thisrow{plot} != 1 ? nan : x},
+	]
+	table[x=V, y=mu]{\data/trimanalysis/6dof/V.dat};
+\label{plot:trimanalysis-level}
+
+% saddle nodes mu
+\addplot[trimBank, forget plot,
+	x filter/.expression={\thisrow{plot} != 2 ? nan : x},
+	]	 
+	table[x=V, y=mu]{\data/trimanalysis/6dof/V-mu.dat};
+\label{plot:trimanalysis-turn}
+
+% start
+\addplot[color=black, trimStart,
+	x filter/.expression={\thisrow{plot} != 1 ? nan : x},
+	skip coords between index={1}{10000},
+	]
+	table[x=V, y=mu]{\data/trimanalysis/6dof/V.dat};
+
+% low bank
+\addplot[color=black, trimBankLow, 
+	x filter/.expression={\thisrow{plot} != 2 ? nan : x},
+	skip coords between index={1}{10000},
+	]
+	table[x=V, y=mu]{\data/trimanalysis/6dof/V-mu.dat};
+\label{plot:trimanalysis-turn-start}
+
+\end{axis}
+\end{tikzpicture}%

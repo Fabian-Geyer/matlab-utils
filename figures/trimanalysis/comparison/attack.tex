@@ -1,0 +1,149 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={air speed ($\si{\metre\per\second}$)},
+ylabel={angle of attack ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={180/3.14*y},
+unbounded coords=jump,
+xmin=13,
+xmax=45.72,
+legend cell align=left,
+legend columns=-1,
+%transpose legend,
+legend to name=legend-trimanalysis-comparison,
+]
+%% legend
+\addlegendpair[gtmData]{GTM trim}
+\label{plot:trimanalysis-gtm}
+
+\addlegendpair{$\quad$}
+
+\addlegendpair[coeffPW]{piecewise fit}
+\label{plot:trimanalysis-piecewise}
+
+\addlegendpair{$\quad$}
+
+\addlegendpair[coeffKDC]{polynomial fit}
+\label{plot:trimanalysis-polynomial}
+
+\addlegendpair{$\quad$}
+
+\addlegendpair[coeffCSB]{CSB2011 \cite{chakrabortyEtAl2011}}
+\label{plot:trimanalysis-chakraborty}
+
+\addlegendpair{$\quad$}
+
+\addlegendpair[trimStart]{starting point}
+\label{plot:trimanalysis-start}
+%%%%
+
+
+%% GTM data
+\addplot[gtmData,
+	] 
+	table[x=V, y=alpha]{\data/trimanalysis/gtm.dat};
+%%%%
+
+
+%% piecewise fit
+\addplot[trimSurface, coeffPW, dashdotdotted,
+	] 
+	table[x=V, y=alpha]{\data/trimanalysis/piecewise.dat};
+%%%%
+
+
+%% polynomial fit
+\addplot[trimSurface, coeffKDC, dashed,
+	] 
+	table[x=V, y=alpha]{\data/trimanalysis/poly.dat};
+%%%%
+
+
+%% CSB+2011 fit
+\addplot[trimSurface, coeffCSB, dashdotted,
+	] 
+	table[x=V, y=alpha]{\data/trimanalysis/chakraborty.dat};
+%%%%
+
+
+%% start (polynomial fit)
+\addplot[color=black, trimStart, 
+	skip coords between index={1}{10000},
+	]
+	table[x=V, y=alpha]{\data/trimanalysis/poly.dat};
+%%%%
+
+%% prepare for magnification
+\node[coordinate] (anchor) at (22.5, 46) {};
+
+\node[coordinate] (magn min) at (24, 5) {};
+\node[coordinate] (magn max) at (32.5, 30) {};
+\node[draw, densely dotted] (magn) [fit=(magn min) (magn max), inner sep=0mm] {};
+%%%%
+
+\end{axis}
+
+
+\begin{axis}[%
+width=0.5\FigWidth,
+height=0.3\FigHeight,
+at={(anchor)},
+anchor=south west,
+axis background/.style={fill=white},
+scale only axis,
+xtick={25,30},
+minor tick num=1,
+grid=both,
+y filter/.expression={180/3.14*y},
+unbounded coords=jump,
+xmin=24,
+xmax=32.5,
+ymin=5,
+ymax=30,
+extra description/.code={
+	\node[coordinate] (aux south west) at (0,0) {};
+	\node[coordinate] (aux south east) at (1,0) {};
+}
+]
+%% GTM data
+\addplot[gtmData,
+	] 
+	table[x=V, y=alpha]{\data/trimanalysis/gtm.dat};
+%%%%
+
+%% piecewise fit
+\addplot[trimSurface, coeffPW, dashdotdotted,
+	] 
+	table[x=V, y=alpha]{\data/trimanalysis/piecewise.dat};
+%%%%
+
+%% polynomial fit
+\addplot[trimSurface, coeffKDC, dashed,
+	] 
+	table[x=V, y=alpha]{\data/trimanalysis/poly.dat};
+%%%%
+
+%% CSB+2011 fit
+\addplot[trimSurface, coeffCSB, dashdotted,
+	] 
+	table[x=V, y=alpha]{\data/trimanalysis/chakraborty.dat};
+%%%%
+\end{axis}
+
+\draw[dotted] (magn.south west) -- (aux south west);
+\draw[dotted] (magn.south east) -- (aux south east);
+
+\end{tikzpicture}%

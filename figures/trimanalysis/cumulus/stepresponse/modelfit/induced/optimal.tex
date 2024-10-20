@@ -1,0 +1,27 @@
+\providecommand\revi\relax
+
+\begin{tikzpicture}
+
+\begin{loglogaxis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={frequency (\si{\hertz})},
+ylabel={\revi distribution (\si{\degree\per\hertz})},
+grid=major,
+xmin=0.1,
+xmax=10,
+%ymin=0.05,
+%ymax=25,
+cycle list name=color list,
+]
+\foreach \j in {1,2,...,12}
+	\addplot+[dashed,
+	x filter/.expression={\thisrow{step} != \j ? nan : ln(x)},
+	]
+	table[x=freq, y expr={e^\thisrow{meas}-e^\thisrow{modj}}]{\data/trimanalysis/cumulus/stepresponse/induced/modelfit/frequency.dat};
+	
+
+\end{loglogaxis}
+\end{tikzpicture}

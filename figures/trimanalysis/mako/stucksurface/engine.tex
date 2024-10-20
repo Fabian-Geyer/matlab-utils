@@ -1,0 +1,101 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={airspeed ($\si{\metre\per\second}$)},
+ylabel={engine speed ($\si{\revolution\per\second}$)},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={\thisrow{alpha} > 12 || \thisrow{gamma} < -0.523 || \thisrow{gamma} > 0.523 ? nan : y},
+unbounded coords=jump,
+%xmin=-4,
+%ymin=-141.5, %-138.8123,
+xmax=7.1,
+ymax=123,
+legend columns=-1,
+legend to name=legend-stucksurface-alt,
+]
+\addplot[trimCritical, 
+name path=hopf,
+] 
+table[x=V, y=T]{\data/trimanalysis/mako/stucksurface/hopf.dat};
+
+\addplot[trimCritical, dashdotdotted,
+x filter/.expression={\thisrow{stab}==0 ? nan : x},
+name path=zerothrust,
+]
+table[x=V, y=T]{\data/trimanalysis/mako/zerothrust.dat};
+
+
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab}==1 ? x : nan},
+mark end=0,
+] 
+table[x=V, y=T]{\data/trimanalysis/mako/stucksurface/eta0.dat};
+
+\addplot[trimStable, forget plot,
+x filter/.expression={\thisrow{stab}==1 ? x : nan},
+] 
+table[x=V, y=T]{\data/trimanalysis/mako/stucksurface/eta0.dat};
+
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab}==1 ? x : nan},
+] 
+table[x=V, y=T]{\data/trimanalysis/mako/stucksurface/eta10.dat};
+
+\addplot[trimStable, forget plot,
+x filter/.expression={\thisrow{stab}==1 ? x : nan},
+mark end=0,
+mark with=diamond*,
+mark size=2.5pt,
+] 
+table[x=V, y=T]{\data/trimanalysis/mako/stucksurface/eta10.dat};
+
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab}==1 ? x : nan},
+mark end=0,
+mark with=star,
+mark size=3pt,
+] 
+table[x=V, y=T]{\data/trimanalysis/mako/stucksurface/eta-1.dat};
+
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab}==1 ? x : nan},
+] 
+table[x=V, y=T]{\data/trimanalysis/mako/stucksurface/eta15.dat};
+
+\addplot[trimStable, forget plot,
+x filter/.expression={\thisrow{stab}==1 ? x : nan},
+mark end=0,
+mark with=square*,
+mark size=2pt,
+] 
+table[x=V, y=T]{\data/trimanalysis/mako/stucksurface/eta15.dat};
+
+
+%\addplot[pattern color=mycolor3, pattern=crosshatch dots,
+%]
+%fill between[of=zerothrust and hopf];
+
+
+\addlegendpair[trimStart]{starting point $\eta_0 = \SI{0}{\degree}$}
+\label{plot:trimanalysis-start-eta0}
+
+\addlegendpair[trimStart, mark=diamond*, mark size=3pt]{starting point $\eta_0 = \SI{1}{\degree}$}
+\label{plot:trimanalysis-start-eta10}
+
+\addlegendpair[trimStart, mark=square*, mark size=2pt]{starting point $\eta_0 = \SI{1.5}{\degree}$}
+\label{plot:trimanalysis-start-eta15}
+
+\addlegendpair[trimStart, mark=star, mark size=3pt]{starting point $\eta_0 = -\SI{1}{\degree}$}
+\label{plot:trimanalysis-start-eta-1}
+
+\end{axis}
+\end{tikzpicture}%

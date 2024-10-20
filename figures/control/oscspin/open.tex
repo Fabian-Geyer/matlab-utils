@@ -1,0 +1,48 @@
+\providecommand\angleofattack{angle of attack}
+\providecommand\pitchrate{pitch rate}
+\providecommand\bankangle{bank angle}
+\providecommand\oddylabel{ylabel absolute,}
+\providecommand\evenylabel{ylabel shift=-0.1cm,}
+
+\begin{tikzpicture}
+
+\begin{groupplot}[%
+group style={
+	group size=1 by 3,
+	vertical sep=1pt,
+	x descriptions at=edge bottom,
+},
+width=0.8\FigWidth,
+height=0.33\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={time (\si{\second})},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={180/3.14*y},
+xmin=0,
+xmax=10,
+]
+\nextgroupplot[xtick={0,2,...,8},
+ylabel={\angleofattack{} (\si{\degree})},
+\oddylabel
+]
+\addplot[mycolor1,]
+table[x=time, y=alpha]{\data/control/oscspin/open.dat};
+
+\nextgroupplot[xtick={0,2,...,8},
+ylabel={\pitchrate{} (\si{\degree\per\second})},
+\evenylabel
+]
+\addplot[mycolor1,]
+table[x=time, y=q]{\data/control/oscspin/open.dat};
+
+\nextgroupplot[xtick={0,2,...,10},
+ylabel={\bankangle{} (\si{\degree})},
+\oddylabel
+]
+\addplot[mycolor1,]
+table[x=time, y=Phi]{\data/control/oscspin/open.dat};
+
+\end{groupplot}
+\end{tikzpicture}

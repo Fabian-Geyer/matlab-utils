@@ -1,0 +1,72 @@
+% longitudinal axis systems
+% including air-path, body, and world system
+
+\providecommand\airspeed[1][\vec{V}]{\speed[A]{#1}}
+
+\providecommand\liftforce{\vec{L}}
+\providecommand\dragforce{\vec{D}}
+\providecommand\weightforce{m\vec{g}}
+\providecommand\thrustforce{\vec{F}}
+
+\setlength\FigUnit{.0625\FigWidth}
+
+
+\begin{tikzpicture}[auto, >={Latex[round,fill=white]}] %stealth']
+
+	%% 		Delfly image and centre-of-gravity			%%
+	% for Delfly image width=245, COG at 77;106
+%	\node	(delfly) at (0,0) [xshift=22pt,yshift=8pt,node contents={\delflyLongImg{122pt}}] {};
+	\node	(cog) 	 at (0,0) [circle,inner sep=0pt,minimum size=2mm,draw=black,ultra thick,fill=white] {};
+	
+	
+	%%		axes																		%%
+	% x-axes start & end points
+	\node (x_g) at (-10\FigUnit,0\FigUnit) {}; 		\node (minus x_g) at (4.5\FigUnit,0\FigUnit) {};
+	\node (x_a) at (-10\FigUnit,2\FigUnit) {};
+%	\node (x_k) at (-10\FigUnit,4\FigUnit) {};
+	\node (x_f) at (-7.5\FigUnit,4.5\FigUnit) {};		\node (minus x_f) at (3.75\FigUnit,-2.25\FigUnit) {};
+	% z-axes start & end points
+	\node (z_g) at (0\FigUnit,-4.5\FigUnit) {}; 		\node (minus z_g) at (0\FigUnit,4.5\FigUnit) {};
+	\node (z_a) at (-0.9\FigUnit, -4.5\FigUnit) {};
+	\node (z_f) at (-2.25\FigUnit,-3.75\FigUnit) {};
+	% x-axes
+	\draw (minus x_g) -- 	(cog) -- node[pos=1, xshift=-0.3cm] {$\earth{x}$} (x_g);
+	\draw 			(cog) -- node[pos=1] {$\air{x}$} (x_a);
+%	\draw 			(cog) -- node[pos=1] {$x_k$} (x_k);
+	\draw (minus x_f) -- 	(cog) -- node[pos=1] {$\body{x}$} (x_f);
+	% z-axes
+	\draw (minus z_g) -- 	(cog) -- node[pos=1, yshift=-0.3cm] {$\earth{z}$} (z_g);
+	\draw			(cog) -- node[pos=1, swap, yshift=-0.3cm] {$\air{z}$} (z_a);
+	\draw			(cog) -- node[pos=1, swap, yshift=-0.3cm] {$\body{z}$} (z_f);
+	
+	
+	%%		forces																	%%
+	\coordinate (weight) at (0\FigUnit,-3.5\FigUnit) 		 {};
+	\coordinate (lift)	 at (0.75\FigUnit,3.75\FigUnit)	 {};
+	\coordinate (thrust) at (-2.5\FigUnit,1.5\FigUnit) {};
+	\coordinate (drag)	 at (0.9\FigUnit,-0.18\FigUnit)	 {};
+	\draw[->,ultra thick] (cog) -- node[pos=1] 		  {$\weightforce$} (weight);
+	\draw[->,ultra thick] (cog) -- node[pos=1.1,swap] {$\liftforce$} (lift);
+	\draw[->,ultra thick] (cog) -- node[pos=1.1,swap]	{$\thrustforce$} (thrust);
+	\draw[->,ultra thick] (cog) -- node[pos=1,yshift=-0.4cm] {$\dragforce$} (drag);
+	
+	
+	%%		velocities															%%
+	\coordinate (air speed)	at (-8\FigUnit,1.6\FigUnit)	{};
+%	\coordinate (path speed)	at (-4\FigUnit,1.6\FigUnit) {};
+%	\draw[->,ultra thick] (air speed) -- node[pos=0.5] {$\vec{V}_W$} (path speed);
+	\draw[->,ultra thick] (cog) -- node[pos=1] {$\airspeed$} (air speed);
+%	\draw[->,ultra thick] (cog) -- node[pos=1,swap,xshift=-0.1\FigUnit] {$\vec{V}_K$} (path speed);
+	
+	
+	%%		angles																	%%
+	% gamma = arg(x_g,cog,x_f)
+%	\draw pic [pic text={$\gamma$},pic text options={circle,inner sep=0,fill=white},draw,{Latex[round]}-,thick,angle radius=2\FigUnit,angle eccentricity=1.15] {angle=x_k--cog--x_g};
+	% theta = arg(x_g,cog,x_k)
+	\draw pic [pic text={$\Theta$},draw,{Latex[round]}-,thick,angle radius=3.5\FigUnit,angle eccentricity=1.125] {angle=x_f--cog--x_a}; \draw pic [draw,thick,angle radius=3.5\FigUnit] {angle=x_a--cog--x_g};
+	% gamma_A = arg(x_g,cog,x_a)
+	\draw pic [pic text={$\airspeed[\gamma]$},draw,{Latex[round]}-,thick,angle radius=5\FigUnit,angle eccentricity=1.1] {angle=x_a--cog--x_g};
+	% alpha = arg(x_a,cog,x_f)
+	\draw pic [pic text={$\alpha$},pic text options={circle,inner sep=0,fill=white},draw,{Latex[round]}-,thick,angle radius=5\FigUnit,angle eccentricity=1.1] {angle=x_f--cog--x_a};
+	
+\end{tikzpicture}

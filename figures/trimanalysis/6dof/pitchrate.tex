@@ -1,0 +1,43 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={airspeed ($\si{\metre\per\second}$)},
+ylabel={pitch rate ($\si{\degree\per\second}$)},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={2*\thisrow{V}/0.278983*180/3.14*y}, % q = 2*V/c*qhat
+xmin=24.3840,
+xmax=45.72,
+]
+% level flight
+\addplot[trimLevel, forget plot,
+	x filter/.expression={\thisrow{plot} != 1 ? nan : x},
+	]
+	table[x=V, y=qhat]{\data/trimanalysis/6dof/V.dat};
+
+% saddle nodes mu
+\addplot[trimBank, forget plot,
+	x filter/.expression={\thisrow{plot} != 2 ? nan : x},
+	]	 
+	table[x=V, y=qhat]{\data/trimanalysis/6dof/V-mu.dat};
+
+% start
+\addplot[color=black, trimStart,
+	x filter/.expression={\thisrow{plot} != 1 ? nan : x},
+	skip coords between index={1}{10000},
+	]
+	table[x=V, y=qhat]{\data/trimanalysis/6dof/V.dat};
+
+% low bank
+\addplot[color=black, trimBankLow, 
+	x filter/.expression={\thisrow{plot} != 2 ? nan : x},
+	skip coords between index={1}{10000},
+	]
+	table[x=V, y=qhat]{\data/trimanalysis/6dof/V-mu.dat};
+
+\end{axis}
+\end{tikzpicture}%

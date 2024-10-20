@@ -1,0 +1,85 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xtick={0,5,...,30},
+ytick={-75,-60,...,90},
+xlabel={airspeed ($\si{\metre\per\second}$)},
+ylabel={path inclination ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+x filter/.expression={x + 11.3631},
+y filter/.expression={y - 2.2834},
+ymin=-85,
+ymax=70,
+xmin=1,
+xmax=21,
+view={0}{90},
+point meta min=-200,
+point meta max=200,
+colormap/jet,
+legend columns=5,
+legend cell align=left,
+legend to name=legend-timeresponse-control3-time,
+]
+\addplot3[contour gnuplot, safePW,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=V,y=gamma,z=Lya-1]{\data/safeset/stableset/cumulus/control3/phugoid.dat};
+\addlegendentry{invariant subset ($\alpha \leq \alpha_0$)}
+
+\addlegendspace
+
+\addplot3[contour gnuplot, safePW, dashdotdotted,
+mesh/rows=100, mesh/cols=100,
+forget plot,
+]
+table[x=V,y=gamma,z=Lya-2]{\data/safeset/stableset/cumulus/control3/phugoid.dat};
+
+\addplot3[safeEqu]
+coordinates{ (0,0,0) };
+\addlegendentry{trim condition}
+
+
+\addlegendpair[safePW, dashdotdotted]{invariant subset ($\alpha > \alpha_0$)}
+
+\addlegendspace
+
+\foreach \e in {38, 41, 44, 47, 50, 53, 40}
+{
+	\addplot3[line width=1pt, mycolor4, dashed, forget plot,
+	x filter/.expression={x}, % no trim offset
+	y filter/.expression={180/3.14*y},
+	]
+	table[x=V,y=gamma,z expr=0]{\data/safeset/stableset/cumulus/control3/timeresponse/off\e.dat};
+
+	\addplot3[mark only, mark=square*, mycolor4, mark indices=1, forget plot,
+	x filter/.expression={\thisrow{Lya} > 0 ? nan : x},
+	y filter/.expression={180/3.14*y},
+	]
+	table[x=V,y=gamma,z expr=0]{\data/safeset/stableset/cumulus/control3/timeresponse/off\e.dat};
+}
+
+\addplot3[nmpcClosed, mycolor4,
+x filter/.expression={x}, % no trim offset
+y filter/.expression={180/3.14*y},
+]
+table[x=V,y=gamma,z expr=0]{\data/safeset/stableset/cumulus/control3/timeresponse/off40.dat};
+\addlegendentry{polynomial control}
+
+%\addplot3[contour gnuplot, dashdotted,
+%contour/levels={-200,-175,-150,-125,-100,-75,-50,-25,0,25,50,75,100,125,150},
+%mesh/rows=100, mesh/cols=100,
+%forget plot,
+%]
+%table[x=V,y=gamma,z=k]{\data/safeset/stableset/cumulus/control3/phugoid.dat};
+%
+%\addlegendpair[dashdotted, contour label legend, red!60!yellow]{actuator rate (\si{\degree\per\second})}
+
+
+
+\end{axis}
+\end{tikzpicture}

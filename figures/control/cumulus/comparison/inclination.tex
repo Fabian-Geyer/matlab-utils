@@ -1,0 +1,38 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={time ($\si{\second}$)},
+ylabel={inclination angle ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={180/3.18*y},
+xmin=0,
+xmax=20,
+]
+
+\addplot[nmpcClosed, mycolor1,
+]
+table[x=time,y=gamma]{\data/control/cumulus/empc.dat};
+
+\addplot[nmpcClosed, mycolor3,
+]
+table[x=time,y=gamma]{\data/control/cumulus/empc-regular.dat};
+
+\addplot[nmpcClosed, mycolor2,
+]
+table[x=time,y=gamma]{\data/control/cumulus/nmpc.dat};
+
+\addplot[nmpcClosed, mycolor5, dashed,
+]
+table[x=time,y=gamma]{\data/control/cumulus/lmpc.dat};
+
+\addplot[nmpcTarget,
+]
+table[x=time,y=gamma]{\data/control/cumulus/empc/target.dat};
+
+\end{axis}
+\end{tikzpicture}

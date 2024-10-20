@@ -1,0 +1,82 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={\only<article>{airspeed ($\si{\metre\per\second}$)}},
+ylabel={\alt<article>{angle of attack}{$\alpha$} ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={\thisrow{T} < -10 ? nan : 180/3.14*y},
+xmin=24.3840,
+xmax=45.72,
+ymin=0,
+legend cell align=left,
+legend columns=-1,
+%transpose legend,
+legend to name=legend-trimanalysis
+]
+% level flight
+\addplot[trimLevel,
+	x filter/.expression={\thisrow{plot} != 1 ? nan : x},
+	] 
+	table[x=V, y=alpha]{\data/trimanalysis/6dof/V.dat};
+\label{plot:trimanalysis-levelflight}
+\addlegendentry{level flight}
+
+\addlegendpair{$\:$}
+
+\only<3>{
+% saddle-nodes gamma
+\addplot[trimGamma,
+	x filter/.expression={\thisrow{plot} != 4 ? nan : x},
+	] 
+	table[x=V, y=alpha]{\data/trimanalysis/6dof/V-gamma.dat};
+\label{plot:trimanalysis-climb}
+\addlegendentry{climbing}
+}
+
+\addlegendpair{$\:$}
+
+\only<4>{
+% saddle nodes mu
+\addplot[trimBank,
+	x filter/.expression={\thisrow{plot} != 2 ? nan : x},
+	]	 
+	table[x=V, y=alpha]{\data/trimanalysis/6dof/V-mu.dat};
+\addlegendentry{coordinated turn}
+}
+
+% start
+\addplot[color=black, trimStart, 
+	x filter/.expression={\thisrow{plot} != 1 ? nan : x},
+	skip coords between index={1}{10000},
+	]
+	table[x=V, y=alpha]{\data/trimanalysis/6dof/V.dat};
+\label{plot:trimanalysis-levelflight-start}
+\addlegendentry{fast level flight}
+
+\only<3>{
+% high gamma
+\addplot[color=black, trimGammaHigh,
+	x filter/.expression={\thisrow{plot} != 4 || \thisrow{gamma} < 4.3e-01 ? nan : x},
+	]
+	table[x=V, y=alpha]{\data/trimanalysis/6dof/V-gamma.dat};
+\label{plot:trimanalysis-climb-start}
+\addlegendentry{high inclination}
+}
+
+\only<4>{
+% low bank
+\addplot[color=black, trimBankLow,
+	x filter/.expression={\thisrow{plot} != 2 ? nan : x},
+	skip coords between index={1}{10000},
+	]
+	table[x=V, y=alpha]{\data/trimanalysis/6dof/V-mu.dat};
+\addlegendentry{low bank-angle}
+}
+
+\end{axis}
+\end{tikzpicture}%

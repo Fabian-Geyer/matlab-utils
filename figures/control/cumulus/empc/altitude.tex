@@ -1,0 +1,35 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={time ($\si{\second}$)},
+ylabel={altitude ($\si{\metre}$)},
+xmajorgrids,
+ymajorgrids,
+%ymin=-10,
+%ymax=10,
+xmin=0,
+xmax=25,
+colormap/jet,
+]
+\foreach \i in {1,25,...,400}
+	\addplot[mesh, nmpcOptimal,
+	point meta={\i},
+	forget plot,
+	]
+	table[x=time,y=alt]{\data/control/cumulus/empc/opt\i.dat};
+
+\addplot[nmpcClosed,
+]
+table[x=time,y=alt]{\data/control/cumulus/empc.dat};
+
+
+\addplot[nmpcTarget,
+]
+table[x=time,y=alt]{\data/control/cumulus/empc/target.dat};
+
+\end{axis}
+\end{tikzpicture}

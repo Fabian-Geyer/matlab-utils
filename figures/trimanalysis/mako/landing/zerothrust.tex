@@ -1,0 +1,68 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+scaled ticks=manual:{}{\pgfmathparse{#1/1000}},
+xlabel={earth-fixed \earth{x}-axis ($\si{\kilo\metre}$)},
+ylabel={earth-fixed \earth{y}-axis ($\si{\kilo\metre}$)},
+minor tick num=1,
+grid=both,
+unbounded coords=jump,
+xmin=-1550,
+xmax=1550,
+ymin=-1550,
+ymax=1550,
+view={0}{90},
+]
+\foreach \h in {250,150,50}
+{
+	\pgfplotsset{cycle list={blue, blue, blue, red, red, red, green, green, green},}
+
+	\addplot3+[
+	x filter/.expression={\h*z*x},
+	y filter/.expression={\h*z*y},
+	z filter/.expression={\h},
+	name path=lower,
+	] 
+	table[x=xg,y=yg,z=rl]{\data/trimanalysis/mako/landing/zerothrust.dat};
+
+	\addplot3+[line width=1pt,
+	x filter/.expression={\h*z*x},
+	y filter/.expression={\h*z*y},
+	z filter/.expression={\h},
+	name path=upper,
+	] 
+	table[x=xg,y=yg,z=ru]{\data/trimanalysis/mako/landing/zerothrust.dat};
+
+
+	\pgfplotsset{
+	%cycle multi list={color list \nextlist 
+	cycle list={
+		{draw=blue, 	pattern color=blue, 	pattern=north east lines},
+		{draw=blue,	pattern color=blue, 	pattern=north east lines},
+		{draw=blue,	pattern color=blue, 	pattern=north east lines},
+		{draw=red,	pattern color=red, 	pattern=north west lines},
+		{draw=red,	pattern color=red, 	pattern=north west lines},
+		{draw=red,	pattern color=red, 	pattern=north west lines},
+		{draw=green,	pattern color=green, pattern=horizontal lines},
+		{draw=green,	pattern color=green, pattern=horizontal lines},
+		{draw=green,	pattern color=green, pattern=horizontal lines},
+	}
+	}
+
+	\addplot3+[draw=none,
+	] 
+	fill between[of=lower and upper];
+	\label{plot:landing-zerothrust-\h}
+}
+
+
+\addplot[mark only, mark=aircraft, mark size=4pt] coordinates{ (0,0) };
+\label{plot:landing-zerothrust-initial}
+
+
+\end{axis}
+\end{tikzpicture}

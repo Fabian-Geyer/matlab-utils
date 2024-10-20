@@ -1,0 +1,62 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.951\FigWidth,
+height=0.35\FigHeight,
+at={(0\FigWidth,0.65\FigHeight)},
+scale only axis,
+xmin=1.0795345,
+xmax=1.079537,
+xlabel style={font=\color{white!15!black}},
+xlabel={airspeed (m/s)},
+ymin=-2.9065,
+ymax=-2.9035,
+ylabel style={font=\color{white!15!black}},
+ylabel={inclination (deg)},
+axis background/.style={fill=white},
+]
+\addplot [color=mycolor1, mark=*, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+1.07953664844275	-2.90372197597354\\
+1.07953479183657	-2.90570431764995\\
+1.0795364638583	-2.90644701044946\\
+1.07953666343403	-2.90595387961239\\
+1.07953664844275	-2.90372197597354\\
+};
+
+\end{axis}
+
+\begin{axis}[%
+width=0.951\FigWidth,
+height=0.35\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xmin=0,
+xmax=0.2,
+xlabel style={font=\color{white!15!black}},
+xlabel={time (s)},
+ymin=-4.96,
+ymax=-4.8,
+ylabel style={font=\color{white!15!black}},
+ylabel={elevator (deg)},
+axis background/.style={fill=white},
+]
+\addplot[const plot, color=mycolor1, mark=*, mark options={solid, mycolor1}] table[row sep=crcr] {%
+0	-4.95231742731763\\
+0.05	-4.83162657182778\\
+0.1	-4.8694829356499\\
+0.15	-4.8135328450711\\
+0.2	-4.95231742731763\\
+};
+
+\end{axis}
+
+\end{tikzpicture}%

@@ -1,0 +1,35 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xmin=-15,
+xmax=95,
+xlabel={angle of attack ($\si{\degree}$)},
+ylabel={lift coefficient ($\cdot$)},
+xmajorgrids,
+ymajorgrids,
+x filter/.expression={\thisrow{eta}==0 ? 180/3.14*x : nan},
+%restrict y to domain*=-0.6:1.6,
+unbounded coords=discard,
+ymin=-0.6,
+ymax=1.5,
+legend columns=7,
+legend to name=legend-polynomial
+]
+\addplot[cumulus] 
+	table[x=alpha, y=Clift]{\data/identification/cumulus.dat};
+\addlegendentry{CFD data}
+
+\addlegendpair{$\quad$}
+
+\addplot[coeffPoly] 
+	table[x=alpha, y=Clift]{\data/identification/cumulus/polynomial.dat};
+\label{plot:identification-piecewise}
+\addlegendentry{polynomial fit}
+
+
+\end{axis}
+\end{tikzpicture}

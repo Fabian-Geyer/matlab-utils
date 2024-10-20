@@ -1,0 +1,219 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+anchor=center,
+scale only axis,
+extra x ticks={0},
+extra y ticks={0},
+extra x tick labels={},
+extra y tick labels={},
+extra tick style={major grid style={solid, color=black}},
+yticklabel={$\pgfmathprintnumber{\tick}\imath$},
+xlabel={real axis},
+ylabel={imaginary axis},
+grid=major,
+xmax=0,
+ymin=-6,
+ymax=6,
+scatter/use mapped color={draw=black, fill=mapped color},
+point meta min=-60,
+point meta max=10,
+legend columns=7,
+legend to name=legend-eigen-eta38,
+]
+\foreach \i in {1,2,...,4}
+{
+	\addplot[black, only marks, mark=x,
+	mark repeat=2,
+	x filter/.expression={\thisrow{p2} >= 5.0 ? nan : x},
+	forget plot,
+	]
+	table[x=ev\i-re, y=ev\i-im]{\data/trimanalysis/cumulus/eigen/linear/eta38.dat};
+
+	\addplot[black, only marks, mark=star,
+	mark repeat=2, mark phase=2, 
+	x filter/.expression={\thisrow{p2} >= 5.0 ? nan : x},
+	forget plot,
+	]
+	table[x=ev\i-re, y=ev\i-im]{\data/trimanalysis/cumulus/eigen/induced/eta38.dat};
+
+	\addplot[scatter, only marks, mark=*,
+	point meta={180/3.14*\thisrow{eta}},
+	x filter/.expression={\thisrow{p2} != 0 ? nan : x},
+	forget plot,
+	]
+	table[x=ev\i-re, y=ev\i-im, meta=eta]{\data/trimanalysis/cumulus/eigen/linear/eta38.dat};
+	
+	\addplot[scatter, only marks, mark=square*,
+	point meta={180/3.14*\thisrow{eta}},
+	x filter/.expression={\thisrow{p2} != 1.5 ? nan : x},
+	forget plot,
+	]
+	table[x=ev\i-re, y=ev\i-im, meta=eta]{\data/trimanalysis/cumulus/eigen/linear/eta38.dat};
+
+	\addplot[scatter, only marks, mark=square*, mark options={rotate=45},
+	point meta={180/3.14*\thisrow{eta}},
+	x filter/.expression={\thisrow{p2} != 1.5 ? nan : x},
+	forget plot,
+	]
+	table[x=ev\i-re, y=ev\i-im, meta=eta]{\data/trimanalysis/cumulus/eigen/induced/eta38.dat};
+
+	\addplot[scatter, only marks, mark=triangle*, mark size=3pt,
+	point meta={180/3.14*\thisrow{eta}},
+	x filter/.expression={\thisrow{p2} != 5.0 ? nan : x},
+	forget plot,
+	]
+	table[x=ev\i-re, y=ev\i-im, meta=eta]{\data/trimanalysis/cumulus/eigen/linear/eta38.dat};
+
+	\addplot[scatter, only marks, mark=triangle*, mark size=3pt, mark options={rotate=180},
+	point meta={180/3.14*\thisrow{eta}},
+	x filter/.expression={\thisrow{p2} != 5.0 ? nan : x},
+	forget plot,
+	]
+	table[x=ev\i-re, y=ev\i-im, meta=eta]{\data/trimanalysis/cumulus/eigen/induced/eta38.dat};
+}
+
+\addlegendpair[
+mark only, mark=x,
+]{linear damping}
+
+\addlegendspace
+
+\addlegendpair[
+mark only, mark=o,
+]{$\kappa_{\dot{q}q} = 0$}
+\label{plot:eigen-eta38-k0}
+
+\addlegendspace
+
+\addlegendpair[
+mark only, mark=square,
+]{$\kappa_{\dot{q}q} = 1.5$}
+\label{plot:eigen-eta38-k15}
+
+\addlegendspace
+
+\addlegendpair[
+mark only, mark=triangle, mark size=3pt, 
+]{$\kappa_{\dot{q}q} = 5.0$}
+\label{plot:eigen-eta38-k50}
+
+\addlegendpair[
+mark only, mark=star,
+]{induced angle of attack}
+
+\addlegendspace
+
+\addlegendpair[
+mark only, mark=*,
+]{$\lambda_{\alpha q} = 0$}
+
+\addlegendspace
+
+\addlegendpair[
+mark only, mark=square*, every mark/.append style={rotate=45},
+]{$\lambda_{\alpha q} = 1.5$}
+
+\addlegendspace
+
+\addlegendpair[
+mark only, mark=triangle*, mark size=3pt, every mark/.append style={rotate=180},
+]{$\lambda_{\alpha q} = 5.0$}
+
+
+\node[coordinate] (magn min) at (-1.2,-1.9) {};
+\node[coordinate] (magn max) at (-0.6,1.9) {};
+\node[draw, fit=(magn min) (magn max), inner sep=0] (magn) {};
+
+\end{axis}
+
+\begin{axis}[
+width=0.3\FigWidth,
+height=.45\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+anchor=east,
+axis background/.style={fill=white},
+scale only axis,
+xmin=-1.2,
+xmax=-0.6,
+ymin=-1.9,
+ymax=1.9,
+extra x ticks={0},
+extra y ticks={0},
+extra x tick labels={},
+extra y tick labels={},
+extra tick style={major grid style={solid, color=black}},
+xtick={-1.2,-0.9,-0.6},
+ytick={-1,1},
+yticklabels={$-\imath$, $\imath$},
+minor tick num=1,
+grid=both,
+y filter/.expression={abs(y) > 2 ? nan : y},
+scatter/use mapped color={draw=black, fill=mapped color},
+point meta min=-60,
+point meta max=10,
+extra description/.code={
+	\node[coordinate] (aux north east) at (1,1) {};
+	\node[coordinate] (aux south east) at (1,0) {};
+},
+]
+\foreach \i in {1,2,...,4}
+{
+	\addplot[black, only marks, mark=x,
+	mark repeat=2,
+	x filter/.expression={\thisrow{p2} >= 5.0 ? nan : x},
+	forget plot,
+	]
+	table[x=ev\i-re, y=ev\i-im]{\data/trimanalysis/cumulus/eigen/linear/eta38.dat};
+
+	\addplot[black, only marks, mark=star,
+	mark repeat=2, mark phase=2, 
+	x filter/.expression={\thisrow{p2} >= 5.0 ? nan : x},
+	forget plot,
+	]
+	table[x=ev\i-re, y=ev\i-im]{\data/trimanalysis/cumulus/eigen/induced/eta38.dat};
+
+	\addplot[scatter, only marks, mark=*,
+	point meta={180/3.14*\thisrow{eta}},
+	x filter/.expression={\thisrow{p2} != 0 ? nan : x},
+	forget plot,
+	]
+	table[x=ev\i-re, y=ev\i-im, meta=eta]{\data/trimanalysis/cumulus/eigen/linear/eta38.dat};
+	
+	\addplot[scatter, only marks, mark=square*,
+	point meta={180/3.14*\thisrow{eta}},
+	x filter/.expression={\thisrow{p2} != 1.5 ? nan : x},
+	forget plot,
+	]
+	table[x=ev\i-re, y=ev\i-im, meta=eta]{\data/trimanalysis/cumulus/eigen/linear/eta38.dat};
+
+	\addplot[scatter, only marks, mark=square*, mark options={rotate=45},
+	point meta={180/3.14*\thisrow{eta}},
+	x filter/.expression={\thisrow{p2} != 1.5 ? nan : x},
+	forget plot,
+	]
+	table[x=ev\i-re, y=ev\i-im, meta=eta]{\data/trimanalysis/cumulus/eigen/induced/eta38.dat};
+
+	\addplot[scatter, only marks, mark=triangle*, mark size=3pt,
+	point meta={180/3.14*\thisrow{eta}},
+	x filter/.expression={\thisrow{p2} != 5.0 ? nan : x},
+	forget plot,
+	]
+	table[x=ev\i-re, y=ev\i-im, meta=eta]{\data/trimanalysis/cumulus/eigen/linear/eta38.dat};
+
+	\addplot[scatter, only marks, mark=triangle*, mark size=3pt, mark options={rotate=180},
+	point meta={180/3.14*\thisrow{eta}},
+	x filter/.expression={\thisrow{p2} != 5.0 ? nan : x},
+	forget plot,
+	]
+	table[x=ev\i-re, y=ev\i-im, meta=eta]{\data/trimanalysis/cumulus/eigen/induced/eta38.dat};
+}	
+\end{axis}
+
+\draw (magn.north east) -- (aux north east) {};
+\draw (magn.south east) -- (aux south east) {};
+
+\end{tikzpicture}

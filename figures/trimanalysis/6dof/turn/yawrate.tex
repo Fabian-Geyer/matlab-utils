@@ -1,0 +1,30 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={airspeed ($\si{\metre\per\second}$)},
+ylabel={yaw rate ($\si{\degree\per\second}$)},
+xmajorgrids,
+ymajorgrids,
+x filter/.expression={\thisrow{plot} != 2 ? nan : x},
+y filter/.expression={2*\thisrow{V}/2.087514*180/3.14*y}, % r = 2*V/b*rhat
+xmin=24.3840,
+xmax=45.72,
+ymin=-5,
+ymax=5,
+]
+\addplot[trimBank, forget plot] 
+	table[x=V, y=rhat]{\data/trimanalysis/6dof/V-mu.dat};
+
+
+\addplot[color=black, trimBankLow, 
+	skip coords between index={1}{10000},
+	]
+	table[x=V, y=rhat]{\data/trimanalysis/6dof/V-mu.dat};
+
+
+\end{axis}
+\end{tikzpicture}%

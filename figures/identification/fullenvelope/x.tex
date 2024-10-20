@@ -1,0 +1,45 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xmin=-15,
+xmax=90,
+extra x ticks={16.1108},
+extra x tick labels={$\alpha_0$},% = \num{16.1}$},
+extra x tick style={major grid style={dashed, color=black}},
+xtick={-15,0,...,90},
+xticklabels={-15,0,$$,30,45,60,75,90},
+xlabel={angle of attack ($\si{\degree}$)},
+ylabel={coefficient $x_f$-axis ($\cdot$)},
+xmajorgrids,
+ymajorgrids,
+restrict y to domain*=-0.2:0.26,
+unbounded coords=discard,
+%ymin=-0.1,
+%ymax=0.25,
+legend cell align=left,
+legend columns=-1,
+legend to name=legend-x
+]
+\addplot[coeffPW,
+x filter/.expression={\thisrow{beta} != 0 ? nan : 180/3.14*x},
+] 
+table[x=alpha, y=Cx]{\data/identification/fullenvelope.dat};
+\label{plot:identification-comparison-pw}
+\addlegendentry{piecewise fit}
+
+\addlegendpair{$\quad$}
+
+\addplot[gtmData,
+x filter/.expression={\thisrow{beta} != 0 ? nan : 180/3.14*x},
+] 
+table[x=alpha, y=Cx]{\data/identification/gtm/6dof.dat};
+\label{plot:identification-comparison-gtm}
+\addlegendentry{GTM data}
+
+
+\end{axis}
+\end{tikzpicture}

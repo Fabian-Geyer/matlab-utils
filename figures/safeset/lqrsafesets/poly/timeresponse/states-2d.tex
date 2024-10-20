@@ -1,0 +1,49 @@
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor2}{rgb}{0.85000,0.32500,0.09800}%
+\definecolor{mycolor3}{rgb}{0.92900,0.69400,0.12500}%
+\definecolor{mycolor4}{rgb}{0.49400,0.18400,0.55600}%
+\definecolor{mycolor5}{rgb}{0.46600,0.67400,0.18800}%
+\definecolor{mycolor6}{rgb}{0.30100,0.74500,0.93300}%
+\definecolor{mycolor7}{rgb}{0.63500,0.07800,0.18400}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=.45\FigHeight,
+at={(0\FigWidth,0.55\FigHeight)},
+scale only axis,
+xmin=0,
+xmax=10,
+%xlabel={response time (\si{\second})},
+ymin=24,
+ymax=36,
+ytick={26,30,...,34},
+ylabel={air speed (\si{\metre\per\second})},
+ylabel absolute=5pt,
+xmajorgrids,
+ymajorgrids
+]
+\input{\figures/lqrsafesets/poly/timeresponse/airspeed-plots}
+\end{axis}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=.45\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xmin=0,
+xmax=10,
+xlabel={response time (\si{\second})},
+ymin=-45,
+ymax=30,
+ytick={-30,-15,...,15},
+ylabel={flight-path angle (\si{\degree})},
+ylabel absolute=5pt,
+xmajorgrids,
+ymajorgrids
+]
+\input{\figures/lqrsafesets/poly/timeresponse/flightpath-plots}
+\end{axis}
+
+\end{tikzpicture}

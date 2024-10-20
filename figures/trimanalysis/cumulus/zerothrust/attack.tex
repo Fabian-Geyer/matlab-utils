@@ -1,0 +1,72 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={air speed ($\si{\metre\per\second}$)},
+ylabel={angle of attack ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={180/3.14*y},
+unbounded coords=jump,
+xmin=5,
+ymax=46.5, %45.9554,
+legend columns=-1,
+legend to name=legend-zerothrust,
+]
+\addplot[trimStable, forget plot,
+x filter/.expression={\thisrow{stab}==1 ? x : nan},
+mark start,
+] 
+table[x=V, y=alpha]{\data/trimanalysis/cumulus/zerothrust.dat};
+
+\addlegendpair[trimStable]{stable trim}
+
+\addlegendspace
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab}==1 && \thisrow{eta} > -.26 ? x : nan},
+embrace={(1.south west) -- (0.south west) node[midway,below left] {$A$}},
+] 
+table[x=V, y=alpha]{\data/trimanalysis/cumulus/zerothrust.dat};
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab}==1 && \thisrow{eta} < -.26 && \thisrow{eta} > -.52 ? x : nan},
+embrace={(0.east) -- (1.east) node[midway,right] {$B$}},
+] 
+table[x=V, y=alpha]{\data/trimanalysis/cumulus/zerothrust.dat};
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab}==1 && \thisrow{eta} < -.7 ? x : nan},
+embrace={(0.east) -- (1.east) node[midway,right] {$C$}},
+] 
+table[x=V, y=alpha]{\data/trimanalysis/cumulus/zerothrust.dat};
+
+\addlegendpair[trimUnstable]{unstable trim}
+\label{plot:trimanalysis-unstable}
+
+\addlegendspace
+
+\addplot[trimHopf, forget plot,
+x filter/.expression={\thisrow{stab}==1 && \thisrow{ustab}==1 ? x : nan},
+] 
+table[x=V, y=alpha]{\data/trimanalysis/cumulus/zerothrust.dat};
+
+\addlegendpair[trimHopf]{Hopf bifurcation}
+\label{plot:trimanalysis-hopf}
+
+\addlegendspace
+
+%\addplot[color=black, trimStart, 
+%	skip coords between index={1}{10000},
+%	]
+%	table[x=V, y=alpha]{\data/trimanalysis/cumulus/zerothrust.dat};
+%	\label{plot:trimanalysis-poly-start}
+\addlegendpair[trimStart]{starting point}
+\label{plot:trimanalysis-start}
+
+
+\end{axis}
+\end{tikzpicture}%

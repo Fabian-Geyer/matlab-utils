@@ -1,0 +1,29 @@
+\begin{tikzpicture}
+
+\begin{semilogyaxis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={simulated time (\si{\second})},
+ylabel={computation time (\si{\second})},
+log ticks with fixed point,
+grid=major,
+%x filter/.expression={\thisrow{time} < 5e-2 ? nan : x},
+xmin=0,
+xmax=10,
+%ymin=0,
+]
+\addplot[const plot, mycolor3, line width=1pt,
+mark repeat=10,
+]
+table[x=time, y=cpu]{\data/control/oscspin/closed/prediction.dat};
+
+
+\addplot[const plot, mycolor2, line width=1pt,
+]
+table[x=time, y=cpu]{\data/control/spiral/closed/prediction.dat};
+
+
+\end{semilogyaxis}
+\end{tikzpicture}

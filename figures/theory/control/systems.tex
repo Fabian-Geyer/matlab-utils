@@ -1,0 +1,51 @@
+\tikzumlset{class width=22ex}
+
+\begin{tikzpicture}
+	\umlclass[x=0, y=0,
+	]{linear}{$\dot{\vec{x}} = \mat{A}\vec{x} + \mat{B}\vec{u}$}{$\mat{A} \in \Real^{n \times n}$, $\mat{B} \in \Real^{n \times m}$}
+
+	\umlclass[x=-5, y=4,
+	]{polynomial}{$\dot{\vec{x}} = \mathfrak{f}\!\left(\vec{x}, \vec{u}\right)$}{$\mathfrak{f} \in \Poly[\Real]{\vec{x},\vec{u}}^n$}
+	
+	\umlclass[x=-5, y=8,
+	]{rational}{$\dot{\vec{x}} = \mathfrak{G}\!\left(\vec{x}\right)^{-1} \mathfrak{f}\!\left(\vec{x},\vec{u}\right)$}{$\mathfrak{f} \in \Poly[\Real]{\vec{x},\vec{u}}^n$, $\mathfrak{G} \in \Poly[\Real]{\vec{x}}^{n \times n}$}
+	
+	\umlclass[x=5, y=4
+	]{describing function}{$\dot{\vec{x}} = \mat{A} \vec\varphi\!\left(\vec{x}\right) + \vec\psi\!\left(\vec{u}\right)$}{$\mat{A} \in \Real^{n \times n}$, $\vec\varphi\!: \Real^n \rightarrow \Real^n$ \\ $\vec\psi\!: \Real^m \rightarrow \Real^n$}
+
+	\umlclass[x=0, y=12,
+	]{switching}{$\dot{\vec{x}} = \vec{h}_i\!\left(\vec{x},\vec{u}\right) \quad \text{if $\vec{x} \in \Phi_i$}$}{$\vec{h}\!: \mathcal{I} \times \Real^n \times \Real^m \rightarrow \Real^n$ \\ $\Phi_i \subset \Real^n$}
+	
+	\umlclass[x=0, y=16,
+	]{hybrid}{$\dot{\vec{x}} = \vec{h}_i\!\left(\vec{x},\vec{u}\right), \quad i = k_i\!\left(\vec{x},\vec{u}\right)$}{$\vec{h}\!: \mathcal{I} \times \Real^n \times \Real^m \rightarrow \Real^n$ \\ $k\!: \mathcal{I} \times \Real^n \times \Real^m \rightarrow \mathcal{I}$}
+	
+	\umlnote[x=-5, y=11,
+	]{switching}{$\left(\Phi_i\right)_{i \in \mathcal{I}}$ form a set partition of $\Real^n$.}
+
+	\umlnote[x=-6, y=14]{hybrid}{}	
+	\umlnote[x=-6, y=14,
+	]{switching}{$\mathcal{I} \subset \Natural$ is the set of discrete {\em modes}.}
+	
+	
+	\umlclass[x=2, y=8.5,
+	type=abstract,
+	fill=red!20,
+	]{companion form}{$\dot{\vec{x}} = \vec{f}\!\left(\vec{x}\right) + \vec{g}\!\left(\vec{x}\right)\vec{u}$}{$\vec{f}\!\left(\vec{x}\right) \in \Real^n$, $\vec{g}\!\left(\vec{x}\right) \in \Real^{n \times m}$}
+	
+	
+	\umlinherit{linear}{polynomial}
+	\umlinherit{polynomial}{rational}
+	\umlinherit{rational}{switching}
+	\umlinherit{switching}{hybrid}
+	
+	\umlinherit{linear}{describing function}
+	\umlimpl[geometry=|-]{describing function}{hybrid}
+	
+	\umldep[name=polycompanion]{companion form}{polynomial}
+	\umldep{companion form}{rational}
+	\umldep{companion form}{switching}
+	
+	\umlnote[x=-0.5, y=5,
+	]{polycompanion-1}{A polynomial system in {\em companion form} is given by $\mathfrak{f} \in \Poly[\Real]{\vec{x}}^n$ and $\mathfrak{g} \in \Poly[\Real]{\vec{x}}^{n \times m}$.}
+	
+\end{tikzpicture}

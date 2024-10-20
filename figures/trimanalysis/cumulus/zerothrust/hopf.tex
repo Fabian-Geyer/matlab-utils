@@ -1,0 +1,67 @@
+\begin{tikzpicture}
+
+\pgfplotsset{trimHopf1/.style={trimSurface, mycolor3, dashdotdotted}}
+\pgfplotsset{trimHopf2/.style={trimSurface, mycolor6, dotted}}
+
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={elevator deflection ($\si{\degree}$)},
+ylabel={damping parameter ($\cdot$)},
+xmajorgrids,
+ymajorgrids,
+unbounded coords=jump,
+xmin=-60,
+ymin=-3,
+]
+\addplot[trimStable, forget plot,
+x filter/.expression={\thisrow{stab}==1 ? 180/3.14*x : nan},
+postaction={decorate}, 
+decoration={markings, mark=at position 1 with {\node[mark start] {};}},
+] 
+table[x=eta, y=p2]{\data/trimanalysis/cumulus/zerothrust.dat};
+
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab}==1 && \thisrow{eta} > -.26 ? 180/3.14*x : nan},
+embrace={(1.south) -- (0.south) node[midway,below=1pt] {$A$}},
+] 
+table[x=eta, y=p2]{\data/trimanalysis/cumulus/zerothrust.dat};
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab}==1 && \thisrow{eta} < -.26 && \thisrow{eta} > -.52 ? 180/3.14*x : nan},
+embrace={(1.south) -- (0.south) node[midway,below=1pt] {$B$}},
+] 
+table[x=eta, y=p2]{\data/trimanalysis/cumulus/zerothrust.dat};
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab}==1 && \thisrow{eta} < -.7 ? 180/3.14*x : nan},
+embrace={(1.south) -- (0.south) node[midway,below=1pt] {$C$}},
+] 
+table[x=eta, y=p2]{\data/trimanalysis/cumulus/zerothrust.dat};
+
+
+\addplot[trimHopf, forget plot,
+x filter/.expression={\thisrow{stab}==1 && \thisrow{ustab}==1 ? 180/3.14*x : nan},
+] 
+table[x=eta, y=p2]{\data/trimanalysis/cumulus/zerothrust.dat};
+
+\foreach \i in {1,2}
+	\addplot[trimHopf1, forget plot,
+	x filter/.expression={180/3.14*x},
+	]
+	table[x=eta, y=p2]{\data/trimanalysis/cumulus/zerothrust/linear/hopf-\i.dat};
+\addlegendpair[trimHopf1]{$\kappa_{\dot{q}q}$};
+
+\foreach \i in {2,3}
+	\addplot[trimHopf2, forget plot,
+	x filter/.expression={180/3.14*x},
+	]
+	table[x=eta, y=p2]{\data/trimanalysis/cumulus/zerothrust/induced/hopf-\i.dat};
+\addlegendpair[trimHopf2]{$\lambda_{\alpha q}$}
+
+\end{axis}
+\end{tikzpicture}%

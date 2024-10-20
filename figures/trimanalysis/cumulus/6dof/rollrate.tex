@@ -1,0 +1,107 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={elevator deflection ($\si{\degree}$)},
+ylabel={roll rate ($\si{\degree\per\second}$)},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={\thisrow{phi} < -2.6 ? nan : 180/3.14*y},
+unbounded coords=jump,
+xmin=-60,
+]
+\addplot[trimStable,
+x filter/.expression={\thisrow{stab}==1 ? 180/3.14*x : nan},
+%mark start,
+] 
+table[x=eta, y=p]{\data/trimanalysis/cumulus/6dof.dat};
+
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab}==1 && \thisrow{eta} < -.26 ? 180/3.14*x : nan},
+%embrace={(0.east) -- (1.east) node[midway,right] {$B$}},
+] 
+table[x=eta, y=p]{\data/trimanalysis/cumulus/6dof.dat};
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab}==1 && \thisrow{eta} > -.26 ? 180/3.14*x : nan},
+] 
+table[x=eta, y=p]{\data/trimanalysis/cumulus/6dof.dat};
+
+\addplot[trimOrbit, forget plot,
+x filter/.expression={180/3.14*x},
+]
+table[x=eta, y=p]{\data/trimanalysis/cumulus/6dof/limitcycles.dat};
+
+\addplot[trimHopf,
+x filter/.expression={\thisrow{stab}==1 && \thisrow{ustab}==1 && \thisrow{eta} < -.26 ? 180/3.14*x : nan},
+] 
+table[x=eta, y=p]{\data/trimanalysis/cumulus/6dof.dat};
+
+\addplot[trimSaddle,
+x filter/.expression={\thisrow{stab}==1 && \thisrow{ustab}==1 && \thisrow{eta} > -.26 ? 180/3.14*x : nan},
+] 
+table[x=eta, y=p]{\data/trimanalysis/cumulus/6dof.dat};
+
+
+%% prepare for magnification
+\node[coordinate] (anchor) at (-5, -32.5) {};
+
+\node[coordinate] (magn min) at (-27, -4) {};
+\node[coordinate] (magn max) at (-21, 4) {};
+\node[draw, densely dotted] (magn) [fit=(magn min) (magn max), inner sep=0mm] {};
+%%%%
+
+\end{axis}
+
+\begin{axis}[%
+width=0.4\FigWidth,
+height=0.3\FigHeight,
+at={(anchor)},
+anchor=north east,
+axis background/.style={fill=white},
+scale only axis,
+xtick={-30,-26,-22},
+%ytick={0,1,...,3},
+minor tick num=1,
+grid=both,
+y filter/.expression={180/3.14*y},
+unbounded coords=jump,
+xmin=-28,
+xmax=-20,
+%ymin=-5,
+%ymax=5,
+extra description/.code={
+	\node[coordinate] (aux north west) at (0,1) {};
+	\node[coordinate] (aux north east) at (1,1) {};
+}
+]
+\addplot[trimStable, forget plot,
+x filter/.expression={\thisrow{stab}==1 ? 180/3.14*x : nan},
+] 
+table[x=eta, y=p]{\data/trimanalysis/cumulus/6dof.dat};
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab}==1 ? 180/3.14*x : nan},
+] 
+table[x=eta, y=p]{\data/trimanalysis/cumulus/6dof.dat};
+
+\addplot[trimOrbit, forget plot,
+x filter/.expression={180/3.14*x},
+]
+table[x=eta, y=p]{\data/trimanalysis/cumulus/6dof/limitcycles.dat};
+
+\addplot[trimHopf, forget plot,
+x filter/.expression={\thisrow{stab}==1 && \thisrow{ustab}==1 && \thisrow{eta} < -.26 ? 180/3.14*x : nan},
+] 
+table[x=eta, y=p]{\data/trimanalysis/cumulus/6dof.dat};
+
+\end{axis}
+
+\draw[dotted] (magn.north west) -- (aux north west);
+\draw[dotted] (magn.north east) -- (aux north east);
+
+\end{tikzpicture}%

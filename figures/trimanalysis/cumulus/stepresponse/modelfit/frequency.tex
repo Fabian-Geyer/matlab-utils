@@ -1,0 +1,33 @@
+\providecommand\revi\relax
+
+\begin{tikzpicture}
+
+\begin{loglogaxis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={frequency (\si{\hertz})},
+ylabel={\revi distribution (\si{\degree\per\hertz})},
+grid=major,
+x filter/.expression={\thisrow{step} != 1 ? nan : ln(x)},
+xmin=0.1,
+xmax=10,
+]
+\addplot[dotted, line width=1pt, blue,
+]
+table[x=freq, y expr={e^\thisrow{meas}}]{\data/trimanalysis/cumulus/stepresponse/linear/modelfit/frequency.dat};
+
+
+\addplot[solid,
+]
+table[x=freq, y expr={e^\thisrow{modj}}]{\data/trimanalysis/cumulus/stepresponse/linear/modelfit/frequency.dat};
+
+
+\addplot[densely dashed,
+]
+table[x=freq, y expr={e^\thisrow{modj}}]{\data/trimanalysis/cumulus/stepresponse/induced/modelfit/frequency.dat};
+
+
+\end{loglogaxis}
+\end{tikzpicture}

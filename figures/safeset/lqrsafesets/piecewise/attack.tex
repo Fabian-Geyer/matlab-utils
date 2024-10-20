@@ -1,0 +1,68 @@
+%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={air speed ($\si{\metre\per\second}$)},
+ylabel={angle of attack ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={180/3.14*y},
+extra y ticks={16.6357},
+extra y tick labels={$\alpha_0$},
+ymin=12,
+ymax=20,
+xmin=27.9,
+xmax=28.7,
+legend cell align=left,
+legend columns=5,
+%transpose legend,
+legend to name=legend-lqrsafesets-piecewise,
+extra description/.code={
+	\node at (0.5,0.1) {$\pre\statespace$};
+	\node at (0.5,0.9) {$\post\statespace$};
+}]
+\addplot[trimSurface, coeffPW] 
+	table[x=V, y=alpha]{\data/trimanalysis/piecewise.dat};
+\addlegendentry{piece-wise fit}
+
+\addlegendpair{$\quad\quad$}
+
+\addplot[safeEqu, forget plot]
+	table[x=V, y=alpha]{\data/lqrsafesets/piecewise/eq.dat};
+\label{plot:lqrsafesets-piecewise-trimcondition}
+
+
+\addlegendpair[PW, safeSet]{safe set boundary}
+
+\addlegendpair{$\quad\quad$}
+
+\addplot[safePwBnd]
+	table[x=V, y=alpha]{\data/lqrsafesets/piecewise/boundary.dat};
+\label{plot:lqrsafesets-piecewise-boundary}
+\addlegendentry{switching surface}
+
+\addlegendpair{}
+\addlegendpair{}
+
+\addplot[safeSet, PW1, black,
+	y filter/.expression={180/3.14*y < 16.6357 ? 180/3.14*y : 16.6357}]
+	table[x=V, y=alpha]{\data/lqrsafesets/piecewise/kopt1.dat};
+\label{plot:lqrsafesets-piecewise-safeset-low}
+\addlegendentry{low angles of attack}
+
+\addlegendpair{}
+
+\addplot[safeSet, PW2, black,
+	y filter/.expression={180/3.14*y > 16.6357 ? 180/3.14*y : 16.6357}]
+	table[x=V, y=alpha]{\data/lqrsafesets/piecewise/kopt2.dat};
+\label{plot:lqrsafesets-piecewise-safeset-high}
+\addlegendentry{high angles of attack}
+
+
+\end{axis}
+\end{tikzpicture}%

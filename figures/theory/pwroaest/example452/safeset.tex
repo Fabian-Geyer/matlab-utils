@@ -1,0 +1,58 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+extra x ticks={0},
+extra x tick style={major grid style={dashed, color=black}},
+xtick={-1.5,-1,...,1.5},
+ytick={-1.5,-1,...,1.5},
+xlabel={$x_1$},
+ylabel={$x_2$},
+xmajorgrids,
+ymajorgrids,
+ymin=-1.25,
+ymax=1.25,
+xmin=-1.25,
+xmax=1.25,
+view={0}{90},
+unbounded coords=jump,
+colormap name=reverse jet,
+]
+\foreach \i in {1,2,...,4}
+{
+	\addplot3[contour gnuplot, safeSet, dashed,
+	contour external/output point meta={\i},
+	x filter/.expression={x > 0 ? nan : x},
+	mesh/rows=51, mesh/cols=51,
+	]
+	table[x=x1,y=x2,z=Lya\i-1]{\data/theory/pwroaest/example452.dat};
+
+	\addplot3[contour gnuplot, safeSet, dashed,
+	contour external/output point meta={\i},
+	contour/labels=true, contour/label distance=100pt,
+	x filter/.expression={x < 0 ? nan : x},
+	mesh/rows=51, mesh/cols=51,
+	]
+	table[x=x1,y=x2,z=Lya\i-2]{\data/theory/pwroaest/example452.dat};
+}
+
+\addplot3[contour gnuplot, safeSet,
+contour external/output point meta=5,
+mesh/rows=51, mesh/cols=51,
+x filter/.expression={x > 0 ? nan : x},
+]
+table[x=x1,y=x2,z=Lya-1]{\data/theory/pwroaest/example452.dat};
+
+\addplot3[contour gnuplot, safeSet,
+contour external/output point meta=5,
+mesh/rows=51, mesh/cols=51,
+x filter/.expression={x < 0 ? nan : x},
+]
+table[x=x1,y=x2,z=Lya-2]{\data/theory/pwroaest/example452.dat};
+
+
+\end{axis}
+\end{tikzpicture}

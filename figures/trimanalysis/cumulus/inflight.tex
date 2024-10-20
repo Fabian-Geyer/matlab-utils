@@ -1,0 +1,50 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={elevator deflection ($\si{\degree}$)},
+ylabel={pitch angle ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={180/3.14*y},
+unbounded coords=jump,
+xmin=-60,
+xmax=-15,
+legend to name=legend-trimanalysis-inflight,
+]
+\addplot[only marks, mark=+,
+x filter/.expression={180/3.14*x},
+error bars/.cd, y dir=both, y explicit, 
+]
+table[x=eta, y=theta,
+y error expr={180/3.14*\thisrow{theta-E}},
+]{\data/trimanalysis/cumulus/inflight.dat};
+
+\addlegendpair[mark only, mark=+]{in-flight measurements}
+\label{plot:trimanalysis-inflight}
+
+
+\addplot[trimStable, forget plot,
+x filter/.expression={\thisrow{stab}==1 ? 180/3.14*x : nan},
+] 
+table[x=eta, y=Theta]{\data/trimanalysis/cumulus/zerothrust/linear/k15.dat};
+\label{plot:trimanalysis-model}
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab}==1 ? 180/3.14*x : nan},
+] 
+table[x=eta, y=Theta]{\data/trimanalysis/cumulus/zerothrust/linear/k15.dat};
+
+
+\addplot[trimHopf, forget plot,
+x filter/.expression={\thisrow{stab}==1 && \thisrow{ustab}==1 ? 180/3.14*x : nan},
+] 
+table[x=eta, y=Theta]{\data/trimanalysis/cumulus/zerothrust/linear/k15.dat};
+
+
+
+\end{axis}
+\end{tikzpicture}%

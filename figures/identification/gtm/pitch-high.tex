@@ -1,0 +1,29 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+%xmin=-15,
+%xmax=90,
+xlabel={elevator deflection ($\si{\degree}$)},
+ylabel={coefficient $C_\mathrm{m}$ ($\cdot$)},
+xmajorgrids,
+ymajorgrids,
+x filter/.expression={\thisrow{alpha}==0.6981 ? 180/3.14*x : nan},
+%restrict y to domain*=-0.2:0.26,
+unbounded coords=discard,
+%ymin=-0.1,
+%ymax=0.25,
+legend cell align=left,
+%legend columns=7,
+legend to name=legend-comparison
+]
+\addplot[gtmData] 
+	table[x=eta, y=Cm]{\data/identification/gtm.dat};
+\label{plot:identification-gtm-pitch-high}
+\addlegendentry{GTM data}
+
+\end{axis}
+\end{tikzpicture}

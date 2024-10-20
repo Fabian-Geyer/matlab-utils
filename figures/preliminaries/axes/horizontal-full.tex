@@ -1,0 +1,88 @@
+% lateral axis systems
+% including air-path, flight-path, body, and world system
+
+\providecommand\speedvec{\vec{V}}
+
+\providecommand\airspeed{\speedvec_A}
+\providecommand\airchi{\chi_A}
+
+\providecommand\pathspeed{\speedvec_K}
+\providecommand\pathchi{\chi}
+
+\providecommand\windspeed{\speedvec_W}
+\providecommand\windchi{\chi_W}
+
+\providecommand\liftforce{\vec{L}}
+\providecommand\dragforce{\vec{D}}
+\providecommand\weightforce{m\vec{g}}
+\providecommand\thrustforce{\vec{F}}
+\providecommand\sideforce{\vec{Q}}
+
+\setlength\FigUnit{.0625\FigWidth}
+
+
+\begin{tikzpicture}[auto, >={Latex[round,fill=white]}] %stealth']
+
+	%% 		Delfly image and centre-of-gravity			%%
+	% for Delfly image width=238, COG at 88;141
+%	\node	(delfly) at (0,0) [xshift=15pt,yshift=0pt,node contents={\delflyTopImg{119pt}}] {};
+	\node	(cog) 	 at (0,0) [circle,inner sep=0pt,minimum size=2mm,draw=black,ultra thick,fill=white] {};
+	
+	
+	%%		axes																		%%
+	% x-axes start & end points
+	\node (x_g) at (-10\FigUnit,-4\FigUnit)	{$x_g$};		\node (minus x_g) at (3.5\FigUnit,1.4\FigUnit) {};
+	\node (x_w) at (-10\FigUnit,-2\FigUnit)	{$x_w$};		\node (minus x_w) at (4\FigUnit,0.8\FigUnit) {};
+	\node (x_f) at (-10\FigUnit,0\FigUnit) 	{$x_f^\prime$}; 		\node (minus x_f) at (4.5\FigUnit,\FigUnit) {};
+	\node (x_a) at (-10\FigUnit,2\FigUnit)		{$x_a$};
+	\node (x_k) at (-10\FigUnit,4\FigUnit)		{$x_k$};
+	% y-axes start & end points
+	\node (y_w) at (-0.8\FigUnit,4\FigUnit)	{$y_w$};
+	\node (y_f) at (0\FigUnit,4.5\FigUnit) 		{$y_f^\prime$};	\node (minus y_f) at (0\FigUnit,-4.5\FigUnit) {};
+	\node (y_a) at (0.8\FigUnit,4\FigUnit) 	{$y_a$};
+	% x-axes
+	\draw (minus x_g) -- 	(cog) -- (x_g);
+	\draw (minus x_w) -- 	(cog) -- (x_w);
+	\draw (minus x_f) -- 	(cog) -- (x_f);
+	\draw 			(cog) -- (x_a);
+	\draw 			(cog) -- (x_k);
+	% y-axes
+	\draw 			(cog) -- (y_w);
+	\draw (minus y_f) -- 	(cog) -- (y_f);
+	\draw			(cog) -- (y_a);
+	
+	
+	%%		forces																	%%
+	\coordinate (thrust) at (-3\FigUnit,0\FigUnit) {};
+	%\coordinate (drag)	 at (0.9\FigUnit,-0.18\FigUnit)	 {};
+	\draw[->,ultra thick] (cog) -- node[pos=1.1,swap]	{$\thrustforce$} (thrust);
+	%\draw[->,ultra thick] (cog) -- node[pos=1,yshift=-3.5mm] {$\dragforce$} (drag);
+
+
+	%%		velocities															%%
+	\coordinate (air speed)		at (-8\FigUnit,1.6\FigUnit)			{};
+	\coordinate (path speed)	at (-5.33\FigUnit,2.13\FigUnit) {};
+	\draw[->,ultra thick] (air speed) -- node[pos=0.5] {$\windspeed$} (path speed);
+	\draw[->,ultra thick] (cog) -- node[pos=1] {$\airspeed$} (air speed);
+	\draw[->,ultra thick] (cog) -- node[pos=1,swap,xshift=-1mm] {$\pathspeed$} (path speed);
+	
+	
+	%%%		angles																%%
+	% chi_W = arg(x_g,cog,x_w)
+	\draw pic [pic text={$\windchi$},pic text options={circle,inner sep=0mm,fill=white,xshift=1mm},draw,{Latex[round]}-,thick,angle radius=0.75cm,angle eccentricity=1.4] {angle=x_w--cog--minus x_g};
+	
+	% chi = arg(x_g,cog,x_k)
+	\draw pic [pic text={$\pathchi$},pic text options={circle,inner sep=0mm,fill=white},draw,{Latex[round]}-,thick,angle radius=2\FigUnit,angle eccentricity=1.1] {angle=x_k--cog--x_g};
+	% Psi = arg(x_g,cog,x_f')
+	\draw pic [pic text={$\Psi$},pic text options={circle,inner sep=0mm,fill=white},draw,{Latex[round]}-,thick,angle radius=4\FigUnit,angle eccentricity=1.075] {angle=x_f--cog--x_g};
+	% beta' = arg(x_f',cog,x_a)
+	\draw pic [pic text={$\beta^\prime$},draw,{Latex[round]}-,thick,angle radius=4\FigUnit,angle eccentricity=1.075] {angle=x_a--cog--x_f};
+	% chi'_W = arg(x_g,cog,x_w)
+	\draw pic [pic text={$\bar{\chi}_W$},draw,{Latex[round]}-,thick,angle radius=5\FigUnit,angle eccentricity=1.1] {angle=x_w--cog--x_g};
+	% chi* = arg(x_w,cog,x_k)
+	\draw pic [pic text={$\chi^\ast$},pic text options={circle,inner sep=0mm,fill=white},draw,{Latex[round]}-,thick,angle radius=5\FigUnit,angle eccentricity=1.1] {angle=x_k--cog--x_w};
+	
+	% chi*_A = arg(x_w,cog,x_a)
+	\draw pic [pic text={$\airchi^\ast$},pic text options={circle,inner sep=0mm,fill=white},draw,{Latex[round]}-,thick,angle radius=3\FigUnit,angle eccentricity=1.12] {angle=y_a--cog--y_w};
+
+\end{tikzpicture}

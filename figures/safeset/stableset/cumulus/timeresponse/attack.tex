@@ -1,0 +1,53 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+extra y ticks={16.2949},
+extra y tick labels={$\alpha_0$},% = \num{16.1}$},
+extra y tick style={major grid style={dashed, color=black}},
+ytick={-5,0,...,45},
+yticklabel={\ifdim\tick pt=15pt $$ \else $\pgfmathprintnumber{\tick}$ \fi},
+xlabel={time ($\si{\second}$)},
+ylabel={angle of attack ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={180/3.18*y},
+xmin=0,
+xmax=20,
+ymin=-0.5,
+%ymax=40,
+]
+
+\addplot[nmpcClosed, mycolor3,
+]
+table[x=time,y=alpha]{\data/safeset/stableset/cumulus/control1/timeresponse/eta40.dat};
+
+\addplot[nmpcClosed, mycolor4, 
+]
+table[x=time,y=alpha]{\data/safeset/stableset/cumulus/control3/timeresponse/eta40.dat};
+
+\addplot[nmpcClosed, mycolor5, 
+]
+table[x=time,y=alpha]{\data/safeset/stableset/cumulus/pwcontrol/timeresponse/eta40.dat};
+
+\addplot[nmpcClosed, mycolor6,
+]
+table[x=time,y=alpha]{\data/safeset/stableset/cumulus/reachability/timeresponse/eta40.dat};
+
+\addplot[nmpcClosed, mycolor1, dashed,
+]
+table[x=time,y=alpha]{\data/safeset/stableset/cumulus/damping/timeresponse/eta40.dat};
+
+\addplot[nmpcClosed, mycolor2,
+]
+table[x=time,y=alpha]{\data/safeset/stableset/cumulus/lqr/timeresponse/eta40.dat};
+
+\addplot[nmpcTarget,
+]
+table[x=time,y=alpha]{\data/safeset/stableset/cumulus/target.dat};
+
+\end{axis}
+\end{tikzpicture}

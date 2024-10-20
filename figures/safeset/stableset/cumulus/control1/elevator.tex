@@ -1,0 +1,58 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+extra y ticks={16.2949},
+extra y tick labels={$\alpha_0$},% = \num{16.1}$},
+extra y tick style={major grid style={dashed, color=black}},
+ytick={-30,-15,...,90},
+yticklabel={\ifdim\tick pt=15pt $$ \else $\pgfmathprintnumber{\tick}$ \fi},
+xlabel={elevator deflection ($\si{\degree}$)},
+ylabel={angle of attack ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+x filter/.expression={x - 5},
+y filter/.expression={y + 3.2240},
+xmin=-40,
+xmax=25,
+ymin=-30,
+ymax=45,
+view={0}{90},
+point meta min=-200,
+point meta max=200,
+colormap/jet,
+]
+\addplot3[contour gnuplot, safeSetElps,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=eta,y=alpha,z=P]{\data/safeset/stableset/cumulus/control1/elevator.dat};
+
+
+\addplot3[contour gnuplot, safePW, 
+z filter/.expression={y > 16.2949 ? nan : z},
+mesh/rows=100, mesh/cols=100,
+]
+table[x=eta,y=alpha,z=Lya-1]{\data/safeset/stableset/cumulus/control1/elevator.dat};
+
+\addplot3[contour gnuplot, safePW, dashdotdotted,
+z filter/.expression={y < 16.2949 ? nan : z},
+mesh/rows=100, mesh/cols=100,
+]
+table[x=eta,y=alpha,z=Lya-2]{\data/safeset/stableset/cumulus/control1/elevator.dat};
+
+\addplot3[contour gnuplot, dashdotted,
+contour/levels={-200,-150,-100,-50,0,50,100,150,200},
+%z filter/.expression={z - 5},
+mesh/rows=100, mesh/cols=100,
+]
+table[x=eta,y=alpha,z=k]{\data/safeset/stableset/cumulus/control1/elevator.dat};
+
+
+\addplot3[safeEqu]
+coordinates{ (0,0,0) };
+
+\end{axis}
+\end{tikzpicture}

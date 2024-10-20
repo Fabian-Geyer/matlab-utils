@@ -1,0 +1,44 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xmin=-15,
+xmax=50,
+ymax=0.9,
+extra x ticks={-10,10},
+extra x tick labels={},
+extra x tick style={major grid style={dashed, color=black}},
+xlabel={angle of attack ($\si{\degree}$)},
+ylabel={drag coefficient ($\cdot$)},
+xmajorgrids,
+ymajorgrids,
+unbounded coords=discard,
+x filter/.expression={180/3.14*x},
+]
+\addplot[dashdotted, line width=1pt,
+forget plot,
+]
+table[x=alpha, y=Cdrag]{\data/identification/cumulus/thrust/aero.dat};
+
+
+%\addplot[mark only, mark=diamond,
+%mark options={blue!80!black},
+%y filter/.expression={\thisrow{eta} != 0 ? nan : y},
+%forget plot,
+%]
+%table[x=alpha, y=Cdrag, meta=eta]{\data/identification/cumulus.dat};
+
+
+\addplot[scatter, only marks, mark=diamond*,
+y filter/.expression={\thisrow{eta} != -3.490659e-02 ? nan : y},
+point meta={180/3.14*\thisrow{eta}},
+forget plot,
+]
+table[x=alpha, y=Cdrag, meta=eta]{\data/identification/cumulus.dat};
+
+
+\end{axis}
+\end{tikzpicture}

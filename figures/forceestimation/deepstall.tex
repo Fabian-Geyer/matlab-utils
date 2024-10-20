@@ -1,0 +1,84 @@
+% tikz picture environment
+\begin{tikzpicture}
+
+% pgfplots axis environment
+% technically, there can be multiple axis in a single
+% tikz picture, but I've never used it.
+% Use subfigure floating environments instead.
+\begin{axis}[
+% internal dimensions of figure
+% DO NOT CHANGE
+% they are just adjusted to match desired dimensions.
+width=0.8\FigWidth,
+height=\FigHeight,
+% axis origin at (0,0)
+% that's probably the default anyway
+at={(0\FigWidth,0\FigHeight)},
+% I have no clue what this actually does...
+scale only axis,
+% exact limits of x axis
+% equivalent to MATLAB's
+% 	set(gca, 'XLim', [x1 x2])
+%xmin=-15,
+%xmax=95,
+% axis labels
+% label convention:
+% 	name (unit)
+xlabel={angle of attack ($\si{\degree}$)},
+ylabel={pitch rate ($\si{\degree\per\second}$)},
+zlabel={elevator deflection ($\si{\degree}$)},
+% grids in all three dimensions
+% (pgfplots distinguishes major and minor ticks,
+% where only the majors are labeled)
+xmajorgrids,
+ymajorgrids,
+zmajorgrids,
+% discard values outside bounds
+unbounded coords=discard,
+% convert alpha and eta to degree
+% q is already in degree/s
+x filter/.expression={180/3.14*x},
+z filter/.expression={180/3.14*z},
+% legend format
+legend cell align=left,
+% horizontal legend
+legend columns=-1,
+% save legend to name
+% in order to been drawn outside axis
+legend to name=legend-forceestimation-deepstall,
+% draw a horizontal color bar
+colorbar,
+colorbar right,
+% add label for color bar
+colorbar style={ylabel={drag coefficient ($\cdot$)}},
+% save color bar to name
+colorbar to name=colorbar-forceestimation-deepstall,
+]
+% add 3D plot
+\addplot3[scatter,							% scatter plot 
+% (note that scatter plots have connecting lines by default)
+y filter/.expression={\thisrow{alt} < 20 || ((\thisrow{eta} >= -0.087 || \thisrow{eta} <= -0.7) && mod(\coordindex, 2) != 0) ? nan : y},	% throw away values at low altitude
+point meta=explicit,							% color meta data is provided explicitly
+forget plot,								% don't add plot to legend
+]
+% add tabular data from .dat file
+table[x=alpha, y=q, z=eta, meta=Cdrag]{\data/forceestimation/cumulus.dat};
+
+% add legend entry for orange bullet mark
+% similar to those used in scatter plot
+\addlegendpair[mark only, mark options={orange!80!black, fill=orange}, mark=*]{estimated coefficients}
+
+% add some horizontal space to legend
+% equals $\quad$
+\addlegendspace
+
+% add legend entry for solid line
+% similar to that used in scatter plot
+\addlegendpair[solid]{flight path}
+
+% usually, you won't use the 'forget plot' tag and use
+% 	\addlegendentry{legend entry}
+% to add an entry for just the plot.
+
+\end{axis}
+\end{tikzpicture}

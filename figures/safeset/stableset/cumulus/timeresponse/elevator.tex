@@ -1,0 +1,46 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={time ($\si{\second}$)},
+ylabel={elevator deflection ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={180/3.18*y},
+xmin=0,
+xmax=20,
+]
+
+\addplot[nmpcClosed, mycolor3,
+]
+table[x=time,y=eta]{\data/safeset/stableset/cumulus/control1/timeresponse/eta40.dat};
+
+\addplot[nmpcClosed, mycolor4, 
+]
+table[x=time,y=eta]{\data/safeset/stableset/cumulus/control3/timeresponse/eta40.dat};
+
+\addplot[nmpcClosed, mycolor5, 
+]
+table[x=time,y=eta]{\data/safeset/stableset/cumulus/pwcontrol/timeresponse/eta40.dat};
+
+\addplot[nmpcClosed, mycolor6,
+]
+table[x=time,y=eta]{\data/safeset/stableset/cumulus/reachability/timeresponse/eta40.dat};
+
+\addplot[nmpcClosed, mycolor1, dashed,
+]
+table[x=time,y=eta]{\data/safeset/stableset/cumulus/damping/timeresponse/eta40.dat};
+
+\addplot[nmpcClosed, mycolor2,
+]
+table[x=time,y=eta]{\data/safeset/stableset/cumulus/lqr/timeresponse/eta40.dat};
+
+\addplot[nmpcTarget,
+]
+table[x=time,y=eta]{\data/safeset/stableset/cumulus/target.dat};
+
+\end{axis}
+\end{tikzpicture}

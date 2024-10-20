@@ -1,0 +1,24 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={Time relative to step ($\si{\second}$)},
+ylabel={Elevator ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+unbounded coords=discard,
+legend cell align=left,
+legend columns=-1,
+legend to name=legend-cumulus-exp1Eta
+]
+\addplot[mark=none,
+y filter/.expression={180/3.14*y},
+x filter/.expression={x/1000 -1345.8},
+%y filter/.expression={\thisrow{alt} < 20 || ((\thisrow{eta} >= -0.087 || \thisrow{eta} <= -0.7) && mod(\coordindex, 2) != 0) ? nan : y},
+]
+table[x=time, y=eta,skip coords between index={0}{6200},skip coords between index={6600}{50000}]{\data/tests/cumulus/feedback.dat};
+\end{axis}
+\end{tikzpicture}

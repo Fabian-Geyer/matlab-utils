@@ -1,0 +1,45 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+extra y ticks={16.2949},
+extra y tick labels={$\alpha_0$},% = \num{16.1}$},
+extra y tick style={major grid style={dashed, color=black}},
+ytick={0,15,...,45},
+yticklabels={0,$$,30,45},
+xlabel={time ($\si{\second}$)},
+ylabel={angle of attack ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={180/3.18*y},
+xmin=0,
+xmax=20,
+%ymin=-10,
+ymax=40,
+]
+
+\addplot[nmpcClosed, mycolor1,
+]
+table[x=time,y=alpha]{\data/control/cumulus/empc.dat};
+
+\addplot[nmpcClosed, mycolor3,
+]
+table[x=time,y=alpha]{\data/control/cumulus/empc-regular.dat};
+
+\addplot[nmpcClosed, mycolor2,
+]
+table[x=time,y=alpha]{\data/control/cumulus/nmpc.dat};
+
+\addplot[nmpcClosed, mycolor5, dashed,
+]
+table[x=time,y=alpha]{\data/control/cumulus/lmpc.dat};
+
+\addplot[nmpcTarget,
+]
+table[x=time,y=alpha]{\data/control/cumulus/empc/target.dat};
+
+\end{axis}
+\end{tikzpicture}

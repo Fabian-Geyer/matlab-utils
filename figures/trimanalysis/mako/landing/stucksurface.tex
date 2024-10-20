@@ -1,0 +1,100 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+scaled ticks=manual:{}{\pgfmathparse{#1/1000}},
+xlabel={earth-fixed \earth{x}-axis ($\si{\kilo\metre}$)},
+ylabel={earth-fixed \earth{y}-axis ($\si{\kilo\metre}$)},
+extra x ticks=0,
+extra y ticks=0,
+extra x tick label={$$},
+extra y tick label={$$},
+extra x tick style={major grid style={dashed, color=black}},
+extra y tick style={major grid style={dashed, color=black}},
+minor tick num=1,
+grid=both,
+unbounded coords=jump,
+xmin=-2500,
+xmax=2500,
+ymin=-2500,
+ymax=2500,
+view={0}{90},
+extra description/.code={
+	\tikzset{opac/.style={fill=white,fill opacity=0.5,text opacity=1}}
+	\node[anchor=north east] at (1,1) {$\eta_0 = \SI{0}{\degree}$};
+	\node[anchor=south east] at (1,0) [opac] {$\eta_0 = \SI{5}{\degree}$};
+	\node[anchor=south west] at (0,0) [opac] {$\eta_0 = \SI{2}{\degree}$};
+	\node[anchor=north west] at (0,1) [opac] {$\eta_0 = \SI{1}{\degree}$};
+}
+]
+\pgfplotsset{
+	restrict to 0/.style={
+		restrict x to domain*=-1:2550,
+		restrict y to domain*=-1:2550,
+		z filter/.expression={x < 0 || y < 0 ? nan : 150},
+	},
+	restrict to 50/.style={
+		restrict x to domain*=-#1:2550,
+		restrict y to domain*=-2550:#1,
+		z filter/.expression={x < -(1-#1) || y > (1-#1) ? nan : 150},
+	},
+	restrict to 20/.style={
+		restrict x to domain*=-2550:#1,
+		restrict y to domain*=-2550:#1,
+		z filter/.expression={x > (1-#1) || y > (1-#1) ? nan : 150},
+	},
+	restrict to 10/.style={
+		restrict x to domain*=-2550:#1,
+		restrict y to domain*=-#1:2550,
+		z filter/.expression={x > (1-#1) || y < -(1-#1) ? nan : 150},
+	},
+	line style 0/.style={},
+	line style 10/.style={opacity=0},
+	line style 20/.style={opacity=0},
+	line style 50/.style={opacity=0},
+}
+
+\pgfplotsinvokeforeach{0,10,20,50}
+{
+\foreach \h in {150} %{250,150,50}
+{
+	\addplot3[red,
+	restrict to #1=1,
+	] 
+	table[x expr=\h*\thisrow{xg}*\thisrow{rl},y expr=\h*\thisrow{yg}*\thisrow{rl},z=rl]
+	{\data/trimanalysis/mako/landing/stucksurface/eta#1.dat};
+
+	\addplot3[opacity=0,
+	restrict to #1=0,
+	name path=lower,
+	] 
+	table[x expr=\h*\thisrow{xg}*\thisrow{rl},y expr=\h*\thisrow{yg}*\thisrow{rl},z=rl]
+	{\data/trimanalysis/mako/landing/stucksurface/eta#1.dat};
+
+	\addplot3[line width=1pt, red,
+	line style #1,
+	restrict to #1=0,
+	name path=upper,
+	] 
+	table[x expr=\h*\thisrow{xg}*\thisrow{ru},y expr=\h*\thisrow{yg}*\thisrow{ru},z=ru]
+	{\data/trimanalysis/mako/landing/stucksurface/eta#1.dat};
+
+
+	\addplot3[draw=none, 
+	pattern color=red, pattern=north west lines,
+	] 
+	fill between[of=lower and upper];
+	\label{plot:landing-stucksurface-\h}
+}
+}
+
+
+\addplot[mark only, mark=aircraft, mark size=4pt] coordinates{ (0,0) };
+\label{plot:landing-stucksurface-initial}
+
+
+\end{axis}
+\end{tikzpicture}

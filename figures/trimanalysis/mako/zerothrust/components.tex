@@ -1,0 +1,30 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={horizontal speed ($\si{\metre\per\second}$)},
+ylabel={vertical speed ($\si{\metre\per\second}$)},
+xmajorgrids,
+ymajorgrids,
+x filter/.expression={\thisrow{alpha} > 12 || \thisrow{gamma} < -0.523 ? nan : x},
+unbounded coords=jump,
+%xmin=5,
+%ymax=12,
+]
+\addplot[trimStable, forget plot,
+y filter/.expression={\thisrow{stab}==1 ? y : nan},
+mark start,
+] 
+table[x=xdot, y=zdot]{\data/trimanalysis/mako/zerothrust.dat};
+
+\addplot[trimUnstable,
+y filter/.expression={\thisrow{ustab}==1 ? y : nan},
+] 
+table[x=xdot, y=zdot]{\data/trimanalysis/mako/zerothrust.dat};
+
+
+\end{axis}
+\end{tikzpicture}%

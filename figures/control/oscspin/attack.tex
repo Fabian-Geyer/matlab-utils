@@ -1,0 +1,30 @@
+\providecommand\angleofattack{angle of attack}
+
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={time (\si{\second})},
+ylabel={\angleofattack{} (\si{\degree})},
+grid=major,
+y filter/.expression={180/3.14*y},
+xmin=0,
+xmax=10,
+]
+\addplot[nmpcPredict,
+]
+table[x=time, y=alpha]{\data/control/oscspin/closed/prediction.dat};
+
+\addplot[nmpcClosed, mycolor3,
+]
+table[x=time, y=alpha]{\data/control/oscspin/closed.dat};
+
+\addplot[nmpcTarget,
+]
+table[x=time, y=alpha]{\data/control/oscspin/closed/target.dat};
+
+\end{axis}
+\end{tikzpicture}

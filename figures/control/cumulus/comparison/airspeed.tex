@@ -1,0 +1,54 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={time ($\si{\second}$)},
+ylabel={airspeed ($\si{\metre\per\second}$)},
+xmajorgrids,
+ymajorgrids,
+xmin=0,
+xmax=20,
+%ymin=7.5,
+%ymax=14.5,
+legend columns=-1,
+legend cell align=left,
+legend to name=legend-control-comparison,
+]
+\addplot[nmpcClosed, mycolor1,
+]
+table[x=time,y=V]{\data/control/cumulus/empc.dat};
+\addlegendentry{EMPC}
+
+\addlegendspace
+
+\addplot[nmpcClosed, mycolor3,
+]
+table[x=time,y=V]{\data/control/cumulus/empc-regular.dat};
+\addlegendentry{r-EMPC}
+
+\addlegendspace
+
+\addplot[nmpcClosed, mycolor2,
+]
+table[x=time,y=V]{\data/control/cumulus/nmpc.dat};
+\addlegendentry{NMPC}
+
+\addlegendspace
+
+\addplot[nmpcClosed, mycolor5, dashed,
+]
+table[x=time,y=V]{\data/control/cumulus/lmpc.dat};
+\addlegendentry{LMPC}
+
+\addlegendspace
+
+\addplot[nmpcTarget,
+]
+table[x=time,y=V]{\data/control/cumulus/empc/target.dat};
+\addlegendentry{target trim condition}
+
+\end{axis}
+\end{tikzpicture}

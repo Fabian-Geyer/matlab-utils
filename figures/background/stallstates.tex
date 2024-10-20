@@ -1,0 +1,25 @@
+\begin{tikzpicture}[auto, >=stealth']
+
+\matrix[row sep=5mm, column sep=20mm]{
+\node[start] (alpha) {}; & \node[state] (stall) {stall}; & \node[state] (depart) {departure}; & \node[state, accepting] (gyro) [minimum width=30mm] {post-stall gyro}; \\
+&&& \node[state, accepting] (spin) [minimum width=30mm] {spin}; \\
+&&& \node[state, accepting] (deep) [minimum width=30mm] {deep stall}; \\
+
+\node[start] (speed) {}; & \node[state] (underspeed) {underspeed}; & \node[dummy] (towards descend) {}; \\
+
+\node[start] (bank) {}; & \node[state] (highbank) {high bank-angle}; & & \node[state, accepting] (descend) [minimum width=30mm] {descend}; \\
+};
+
+\graph{
+	(alpha) ->[edge label={$\alpha = \stall\alpha$}] (stall) ->[edge label={$\alpha > \stall\alpha$}] (depart) -> (gyro);
+	(depart) ->[vh path] (spin);
+	(depart) ->[vh path] (deep);
+	
+	(speed) ->[edge label={$V \leq \stall{V}$}] (underspeed) ->[hv path, edge label={$\alpha < \stall\alpha$}, pos=0.07] (descend);
+	(underspeed) ->[edge label={$\alpha \geq \stall\alpha$}, swap] (stall);
+	(bank) ->[edge label={$\Phi \not\in \textit{Env}$}] (highbank) -> (descend);
+};
+
+\node[rectangle] (post stall) [inner sep=3mm, dashed, draw=black, fit={(depart) (gyro) (deep)}] {};
+
+\end{tikzpicture}

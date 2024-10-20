@@ -1,0 +1,64 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+extra x ticks={16.1108},
+extra x tick labels={$\alpha_0$},% = \num{16.1}$},
+extra x tick style={major grid style={dashed, color=black}},
+xtick={-30,-15,...,90},
+xticklabels={-30,-15,0,$$,30,45,60,75,90},
+ytick={-150,-75,...,300},
+xlabel={angle of attack ($\si{\degree}$)},
+ylabel={pitch rate ($\si{\degree\per\second}$)},
+xmajorgrids,
+ymajorgrids,
+x filter/.expression={x + 3.75},
+ymin=-170,
+ymax=245,
+xmin=-35,
+xmax=40,
+view={0}{90},
+legend cell align=left,
+legend columns=3,
+legend to name=legend-shortperiod,
+]
+\addplot3[contour gnuplot, safeSetElps,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=alpha,y=q,z=P]{\data/safeset/stableset/shortperiod/common.dat};
+\addlegendentry{piecewise stable set $\mathcal{P}\!\left(\vec{X}\right) = \rho_0$}
+
+\addlegendpair{$\quad$}
+
+\addplot3[contour gnuplot, safePW,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=alpha,y=q,z=Lya]{\data/safeset/stableset/shortperiod/common.dat};
+\addlegendentry{common dissipative region $\lyapunov_0\!\left(\vec{X}\right) = \lambda_0$}
+\label{plot:shortperiod-piecewise}
+
+%\addlegendpair{$\quad$}
+
+\addplot3[contour gnuplot, safeSetElps, dashed,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=alpha,y=q,z=P]{\data/safeset/stableset/shortperiod/csb2011.dat};
+\addlegendentry{polynomial stable set $\mathcal{P}\!\left(\vec{X}\right) = \rho_\text{Pol}$}
+
+\addlegendpair{$\quad$}
+
+\addplot3[contour gnuplot, safeCSB,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=alpha,y=q,z=Lya]{\data/safeset/stableset/shortperiod/csb2011.dat};
+\addlegendentry{dissipative region $\lyapunov_\text{Pol}\!\left(\vec{X}\right) = \lambda_\text{Pol}$}
+\label{plot:shortperiod-csb}
+
+\addplot3[safeEqu]
+coordinates{ (0,0,0) };
+
+\end{axis}
+\end{tikzpicture}

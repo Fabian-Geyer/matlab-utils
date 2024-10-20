@@ -1,0 +1,132 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={air speed ($\si{\metre\per\second}$)},
+ylabel={angle of attack ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={180/3.14*y},
+unbounded coords=jump,
+xmax=45.72,
+ymax=50,
+]
+%% GTM data
+%\addplot[gtmData,
+%	x filter/.expression={\thisrow{stab} != 1 ? nan : x}
+%	] 
+%	table[x=V, y=alpha]{\data/trimanalysis/gtm.dat};
+%	\label{plot:trimanalysis-gtm}
+%
+%\addplot[gtmData, mark=x,
+%	x filter/.expression={\thisrow{ustab} != 1 ? nan : x}
+%	] 
+%	table[x=V, y=alpha]{\data/trimanalysis/gtm.dat};
+%%%%
+
+
+%% polynomial fit
+\addplot[trimSurface, coeffKDC, loosely dashed,
+	x filter/.expression={\thisrow{ustab} != 1 ? nan : x},
+	] 
+	table[x=V, y=alpha]{\data/trimanalysis/poly.dat};
+
+\addplot[trimSurface, coeffKDC, solid,
+	x filter/.expression={\thisrow{stab} != 1 ? nan : x},
+	] 
+	table[x=V, y=alpha]{\data/trimanalysis/poly.dat};
+
+\addplot[trimHopf, PW, solid,
+	x filter/.expression={\thisrow{stab} != 1 || \thisrow{ustab} != 1 ? nan : x},
+	] 
+	table[x=V, y=alpha]{\data/trimanalysis/poly.dat};
+%%%%
+
+
+%% start (poly fit)
+\addplot[color=black, trimStart, 
+	skip coords between index={1}{10000},
+	]
+	table[x=V, y=alpha]{\data/trimanalysis/poly.dat};
+%%%%
+
+
+%% prepare for magnification
+\node[coordinate] (anchor) at (35, 24) {};
+
+\node[coordinate] (magn min) at (24.5, 14) {};
+\node[coordinate] (magn max) at (27.5, 31) {};
+\node[draw, densely dotted] (magn) [fit=(magn min) (magn max), inner sep=0mm] {};
+%%%%
+
+\end{axis}
+
+
+\begin{axis}[%
+width=0.3\FigWidth,
+height=0.4\FigHeight,
+at={(anchor)},
+anchor=west,
+axis background/.style={fill=white},
+scale only axis,
+xtick={25,27},
+ytick={15,25,35},
+minor tick num=1,
+grid=both,
+y filter/.expression={180/3.14*y},
+unbounded coords=jump,
+xmin=24.5,
+xmax=27.5,
+ymin=14,
+ymax=31,
+extra description/.code={
+	\node[coordinate] (aux north west) at (0,1) {};
+	\node[coordinate] (aux south west) at (0,0) {};
+}
+]
+%% GTM data
+%\addplot[gtmData,
+%	x filter/.expression={\thisrow{stab} != 1 ? nan : x}
+%	] 
+%	table[x=V, y=alpha]{\data/trimanalysis/gtm.dat};
+%	\label{plot:trimanalysis-gtm}
+%
+%\addplot[gtmData, mark=x,
+%	x filter/.expression={\thisrow{ustab} != 1 ? nan : x}
+%	] 
+%	table[x=V, y=alpha]{\data/trimanalysis/gtm.dat};
+%%%%
+
+
+%% polynomial fit
+\addplot[trimSurface, coeffKDC, loosely dashed,
+	x filter/.expression={\thisrow{ustab} != 1 ? nan : x},
+	] 
+	table[x=V, y=alpha]{\data/trimanalysis/poly.dat};
+
+\addplot[trimSurface, coeffKDC, solid,
+	x filter/.expression={\thisrow{stab} != 1 ? nan : x},
+	] 
+	table[x=V, y=alpha]{\data/trimanalysis/poly.dat};
+
+\addplot[trimHopf, PW, solid,
+	x filter/.expression={\thisrow{stab} != 1 || \thisrow{ustab} != 1 ? nan : x},
+	] 
+	table[x=V, y=alpha]{\data/trimanalysis/poly.dat};
+%%%%
+\end{axis}
+
+\draw[dotted] (magn.north west) -- (aux north west);
+\draw[dotted] (magn.south east) -- (aux south west);
+
+\end{tikzpicture}%

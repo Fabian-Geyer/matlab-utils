@@ -1,0 +1,29 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={time (\si{\second})},
+ylabel={air speed (\si{\metre\per\second})},
+grid=major,
+xmin=0,
+xmax=15,
+]
+\addplot[nmpcClosed, mycolor2,
+]
+table[x=time, y=V]{\data/control/spiral/nominal.dat};
+\label{plot:nominal-spiral}
+
+\addplot[nmpcClosed, mycolor3,
+]
+table[x=time, y=V]{\data/control/oscspin/nominal.dat};
+\label{plot:nominal-oscspin}
+
+\addplot[nmpcTarget,
+]
+table[x=time, y=V]{\data/control/spiral/nominal/target.dat};
+
+\end{axis}
+\end{tikzpicture}

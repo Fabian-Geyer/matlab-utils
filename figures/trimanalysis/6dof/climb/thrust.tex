@@ -1,0 +1,44 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={airspeed ($\si{\metre\per\second}$)},
+ylabel={thrust ($\si{\newton}$)},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={\thisrow{T} < -10 ? nan : y},
+xmin=26,
+xmax=45.72,
+ymin=-10,
+]
+\addplot[trimLevel, forget plot,
+	x filter/.expression={\thisrow{plot} != 1 ? nan : x},
+	] 
+	table[x=V, y=T]{\data/trimanalysis/6dof/V-gamma.dat};
+
+\addplot[trimDeclimb, forget plot,
+	x filter/.expression={\thisrow{plot} != 2 ? nan : x},
+	] 
+	table[x=V, y=T]{\data/trimanalysis/6dof/V-gamma.dat};
+
+\addplot[trimClimb, forget plot,
+	x filter/.expression={\thisrow{plot} != 3 ? nan : x},
+	] 
+	table[x=V, y=T]{\data/trimanalysis/6dof/V-gamma.dat};
+
+\addplot[trimGamma, forget plot,
+	x filter/.expression={\thisrow{plot} != 4 ? nan : x},
+	] 
+	table[x=V, y=T]{\data/trimanalysis/6dof/V-gamma.dat};
+
+%\addplot[color=black, trimStart, forget plot,
+%	skip coords between index={1}{10000},
+%	]
+%	table[x=V, y=T]{\data/trimanalysis/6dof/V-gamma.dat};
+
+
+\end{axis}
+\end{tikzpicture}%

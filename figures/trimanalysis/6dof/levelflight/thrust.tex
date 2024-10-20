@@ -1,0 +1,28 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={airspeed ($\si{\metre\per\second}$)},
+ylabel={thrust ($\si{\kilo\newton}$)},
+xmajorgrids,
+ymajorgrids,
+x filter/.expression={\thisrow{plot} > 1 ? nan : x},
+y filter/.expression={y/1000},
+xmin=24.3840,
+xmax=45.72,
+]
+\addplot[trimSurface, mycolor1, forget plot] 
+	table[x=V, y=T]{\data/trimanalysis/6dof/V-gamma.dat};
+
+
+\addplot[color=black, trimStart, forget plot,
+	skip coords between index={1}{10000},
+	]
+	table[x=V, y=T]{\data/trimanalysis/6dof/V-gamma.dat};
+
+
+\end{axis}
+\end{tikzpicture}%

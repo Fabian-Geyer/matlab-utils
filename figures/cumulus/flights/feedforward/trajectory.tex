@@ -1,0 +1,25 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+zmin=0,
+xlabel={earth-fixed $\earth{y}$-axis ($\si{\metre}$)},
+ylabel={earth-fixed $\earth{x}$-axis ($\si{\metre}$)},
+zlabel={altitude ($\si{\metre}$)},
+xmajorgrids,
+ymajorgrids,
+zmajorgrids,
+unbounded coords=discard,
+legend cell align=left,
+%legend columns=7,
+legend to name=legend-cumulus-flight
+]
+\addplot3[mark=none, mycolor3,
+z filter/.expression={-z},
+]
+table[x=pos_y, y=pos_x, z=pos_z]{\data/tests/cumulus/feedforward.dat};
+\end{axis}
+\end{tikzpicture}

@@ -1,0 +1,88 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+anchor=center,
+scale only axis,
+extra x ticks={0},
+extra y ticks={0},
+extra x tick labels={},
+extra y tick labels={},
+extra tick style={major grid style={solid, color=black}},
+yticklabel={$\pgfmathprintnumber{\tick}\imath$},
+xlabel={real axis},
+ylabel={imaginary axis},
+grid=major,
+%y filter/.expression={sign(y)*(ln((abs(y) + 2)},
+ymin=-24,
+ymax=24,
+colorbar,
+colorbar right,
+colorbar style={ylabel={elevator deflection ($\si{\degree}$)}},
+colorbar to name=colorbar-zerothrust,
+]
+\foreach \i in {1,2,...,4}
+	\addplot[scatter, only marks,
+	point meta={180/3.14*\thisrow{eta}},
+	forget plot,
+	]
+	table[x=ev\i-re, y=ev\i-im, meta=eta]{\data/trimanalysis/cumulus/eigen/zerothrust.dat};
+
+
+\node[coordinate, label=above:{$B$}] at (1.5,7) {};
+\node[coordinate, label=below:{$B$}] at (1.5,-7) {};
+
+\node[coordinate, label=right:{$C$}] at (0.6,0) {};
+\node[coordinate, pin=below right:{}] at (0,5.5) {};
+\node[coordinate, pin=above right:{}] at (0,-5.5) {};
+
+\node[coordinate] (magn min) at (-2,-2.5) {};
+\node[coordinate] (magn max) at (0.4,2.5) {};
+\node[draw, fit=(magn min) (magn max), inner sep=0] (magn) {};
+
+\end{axis}
+
+\begin{axis}[
+width=0.3\FigWidth,
+height=.3\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+anchor=east,
+axis background/.style={fill=white},
+scale only axis,
+xmin=-2,
+xmax=0.5,
+extra x ticks={0},
+extra y ticks={0},
+extra x tick labels={},
+extra y tick labels={},
+extra tick style={major grid style={solid, color=black}},
+ytick={-1,1},
+yticklabels={$-\imath$, $\imath$},
+minor tick num=1,
+grid=both,
+y filter/.expression={abs(y) > 4 ? nan : y},
+extra description/.code={
+	\node[coordinate] (aux north east) at (1,1) {};
+	\node[coordinate] (aux south east) at (1,0) {};
+},
+]
+\foreach \i in {1,2,...,4}
+	\addplot[scatter, only marks,
+	point meta={180/3.14*\thisrow{eta}},
+	forget plot,
+	]
+	table[x=ev\i-re, y=ev\i-im, meta=eta]{\data/trimanalysis/cumulus/eigen/zerothrust.dat};
+
+\node[coordinate, label=right:{$A$}] at (0,0) {};
+\node[coordinate, pin=below right:{}] at (-0.1,1.5) {};
+\node[coordinate, pin=above right:{}] at (-0.1,-1.5) {};
+
+\end{axis}
+
+\draw (magn.north west) -- (aux north east) {};
+\draw (magn.south west) -- (aux south east) {};
+
+
+\end{tikzpicture}

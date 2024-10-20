@@ -1,0 +1,38 @@
+\pgfplotsset{contour/handler/.append={fill=gray},}
+
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={$v$},
+ylabel={$w$},
+grid=major,
+xmin = -.5, xmax = 5,
+view={0}{90},
+legend pos=north west,
+legend cell align=left,
+]
+\addplot3[contour gnuplot, safeSet color=mycolor5, dotted,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=v,y=w,z=qc]{\data/theory/unstableiqc/supplyrates.dat};
+
+\addplot3[contour gnuplot, safeSet color=mycolor3, dashed,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=v,y=w,z=qc_loc]{\data/theory/unstableiqc/supplyrates.dat};
+
+\addplot3[contour gnuplot, safeSet color=mycolor1, solid,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=v,y=w,z=qc_int]{\data/theory/unstableiqc/supplyrates.dat};
+
+\addplot3[color=red] coordinates {(-5, -4, 0) (-1, 0, 0) (1, 0, 0) (5, 4, 0)};
+
+\legend{$M_{c=1}$, $M_{c=0.67}$, $\sum s_i g_i$, $\Delta(v)$}
+
+\end{axis}
+\end{tikzpicture}

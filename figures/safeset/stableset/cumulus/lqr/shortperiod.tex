@@ -1,0 +1,60 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+extra x ticks={16.2949},
+extra x tick labels={$\alpha_0$},% = \num{16.1}$},
+extra x tick style={major grid style={dashed, color=black}},
+xtick={-75,-60,...,90},
+xticklabel={\ifdim\tick pt=15pt $$ \else $\pgfmathprintnumber{\tick}$ \fi},
+ytick={-300,-225,...,300},
+xlabel={angle of attack ($\si{\degree}$)},
+ylabel={pitch rate ($\si{\degree\per\second}$)},
+xmajorgrids,
+ymajorgrids,
+x filter/.expression={x + 3.2240},
+ymin=-300,
+ymax=225,
+xmin=-35,
+xmax=55,
+view={0}{90},
+point meta min=-60,
+point meta max=20,
+colormap/jet,
+]
+\addplot3[contour gnuplot, safeSetElps,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=alpha,y=q,z=P]{\data/safeset/stableset/cumulus/lqr/shortperiod.dat};
+
+
+\addplot3[contour gnuplot, safePW, 
+y filter/.expression={x > 16.2949 ? nan : y},
+mesh/rows=100, mesh/cols=100,
+]
+table[x=alpha,y=q,z=Lya-1]{\data/safeset/stableset/cumulus/lqr/shortperiod.dat};
+%\label{plot:longitudinal-shortperiod}
+
+\addplot3[contour gnuplot, safePW, dashdotdotted,
+y filter/.expression={x < 16.2949 ? nan : y},
+mesh/rows=100, mesh/cols=100,
+]
+table[x=alpha,y=q,z=Lya-2]{\data/safeset/stableset/cumulus/lqr/shortperiod.dat};
+%\label{plot:longitudinal-shortperiod-2}
+
+\addplot3[contour gnuplot, dashdotted,
+contour/levels={-60,-50,-40,-30,-20,-10,0,10,20},
+%z filter/.expression={z - 5},
+mesh/rows=100, mesh/cols=100,
+]
+table[x=alpha,y=q,z=k]{\data/safeset/stableset/cumulus/lqr/shortperiod.dat};
+
+
+\addplot3[safeEqu]
+coordinates{ (0,0,0) };
+
+\end{axis}
+\end{tikzpicture}

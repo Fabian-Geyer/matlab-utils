@@ -1,0 +1,39 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xmin=-15,
+xmax=90,
+xlabel={angle of attack ($\si{\degree}$)},
+ylabel={lift coefficient ($\cdot$)},
+xmajorgrids,
+ymajorgrids,
+x filter/.expression={\thisrow{eta}==0 ? 180/3.14*x : nan},
+restrict y to domain*=-0.6:1.6,
+unbounded coords=discard,
+ymin=-0.5,
+ymax=1.5,
+legend columns=5,
+legend to name=legend-identification
+]
+\addplot[gtmData] 
+	table[x=alpha, y=Clift]{\data/identification/gtm.dat};
+\label{plot:identification-gtm}
+\addlegendentry{GTM data}
+
+\addlegendpair{$\quad$}
+
+\addplot[coeffKDC] table[x=alpha, y=Clift]{\data/identification/kwatny2013.dat};
+\label{plot:identification-kwatny2013}
+\addlegendentry{KDC+2013}
+
+\addlegendpair{$\quad$}
+
+\addlegendimage{coeffCSB}
+\addlegendentry{CSB2011}
+
+\end{axis}
+\end{tikzpicture}

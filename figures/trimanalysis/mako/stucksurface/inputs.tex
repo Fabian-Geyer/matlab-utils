@@ -1,0 +1,39 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={elevator deflection ($\si{\degree}$)},
+ylabel={engine speed ($\si{\revolution\per\second}$)},
+xmajorgrids,
+ymajorgrids,
+%x filter/.expression={\thisrow{alpha} > 12 || \thisrow{gamma} < -0.523 || \thisrow{gamma} > 0.523 ? nan : 180/3.14*x},
+x filter/.expression={180/3.14*x},
+unbounded coords=jump,
+xmax=5.5,
+%ymax=30,
+]
+
+\addplot[trimCritical, 
+name path=hopf,
+] 
+table[x=eta, y=T]{\data/trimanalysis/mako/stucksurface/hopf.dat}
+\closedcycle;
+
+
+\addplot[trimCritical, solid,
+y filter/.expression={\thisrow{stab}==0 ? nan : y},
+name path=zerothrust,
+]
+table[x=eta, y=T]{\data/trimanalysis/mako/zerothrust.dat};
+
+
+\addplot[pattern color=mycolor3, pattern=crosshatch dots,
+]
+fill between[of=zerothrust and hopf];
+
+
+\end{axis}
+\end{tikzpicture}%

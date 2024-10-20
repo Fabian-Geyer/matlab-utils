@@ -1,0 +1,40 @@
+%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={air speed ($\si{\metre\per\second}$)},
+ylabel={flight-path angle ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={180/3.14*y},
+ymin=-0.4,
+ymax=0.4,
+xmin=27.9,
+xmax=28.7,
+extra description/.code={
+	\node at (0.8,0.85) {$\pre\statespace$};
+	\node at (0.2,0.15) {$\post\statespace$};
+}]
+\addplot[trimSurface, coeffPW, forget plot] 
+	table[x=V, y=gamma]{\data/trimanalysis/piecewise.dat};
+
+\addplot[safeEqu, forget plot]
+	table[x=V, y=gamma]{\data/lqrsafesets/piecewise/eq.dat};
+
+\addplot[PW, safeSet]
+	table[x=V, y=gamma]{\data/lqrsafesets/piecewise/kopt1.dat};
+
+
+\addplot[safePwBnd,
+	restrict x to domain=28:29
+	]
+	table[x=V, y=gamma]{\data/lqrsafesets/piecewise/boundary.dat};
+
+
+\end{axis}
+\end{tikzpicture}%

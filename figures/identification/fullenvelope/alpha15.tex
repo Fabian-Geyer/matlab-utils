@@ -1,0 +1,28 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={side-slip angle ($\si{\degree}$)},
+ylabel={pitch-moment coefficient ($\cdot$)},
+xmajorgrids,
+ymajorgrids,
+x filter/.expression={\thisrow{eta}==-1.745329e-01 ? 180/3.14*x : nan},
+%restrict y to domain*=-0.6:1.6,
+unbounded coords=discard,
+xmin=-50,
+xmax=50,
+]
+\addplot[gtmData] 
+	table[x=beta, y=Cm]{\data/identification/gtm/6dof-alpha15.dat};
+\addlegendentry{GTM data}
+
+
+\addplot[coeffPW] table[x=beta, y=Cm]{\data/identification/fullenvelope/alpha15.dat};
+\addlegendentry{piecewise fit}
+
+
+\end{axis}
+\end{tikzpicture}

@@ -1,0 +1,68 @@
+\providecommand\lateralvelocity{\ensuremath{x_1}}
+\providecommand\yawrate{\ensuremath{x_2}}
+
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={\lateralvelocity{}},
+ylabel={\yawrate{}},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={10*y},
+ytick={-4,-2,...,4},
+yticklabel={\pgfmathparse{\tick/10}$\pgfmathprintnumber{\pgfmathresult}$},
+xmin=-1.1,
+xmax=1.1,
+ymin=-4.1,
+ymax=4.1,
+view={0}{90},
+colormap/jet,
+legend to name=feasible-car2d,
+legend cell align=left,
+legend columns=3,
+legend style={font=\footnotesize},
+]
+\addplot3[contour gnuplot, safeSet color=mycolor1, solid,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=y1, y=y2, z=Vin]{\data/theory/feasible/car2d.dat};
+\addlegendentry{inner approximation}
+
+\addlegendspace
+
+\addplot3[contour gnuplot, safeSet color=mycolor2, solid,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=y1, y=y2, z=p]{\data/theory/feasible/car2d/terminal.dat};
+\addlegendentry{terminal set}
+
+%\foreach \i in {1,...,5}
+%\addplot3[contour gnuplot, safeSet color=mycolor1, dashed,
+%mesh/rows=100, mesh/cols=100, forget plot
+%]
+%table[x=y1, y=y2, z=Vout]{\data/theory/feasible/car2d/outer\i.dat};
+
+\addplot3[contour gnuplot, safeSet color=mycolor1, dashed,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=y1, y=y2, z=Vout]{\data/theory/feasible/car2d.dat};
+\addlegendentry{outer approximation}
+
+\addlegendspace
+
+\addplot3[line width=1pt, color=mycolor3, dashdotted,
+]
+table[x=y1, y=y2, z expr=0]{\data/theory/feasible/car2d/projection.dat};
+\addlegendentry{convex projection}
+
+\addplot3[contour gnuplot, safeSetElps, line width=0.5pt,
+mesh/rows=100, mesh/cols=100, forget plot,
+]
+table[x=y1, y=y2, z=g]{\data/theory/feasible/car2d.dat};
+
+\end{axis}
+\end{tikzpicture}

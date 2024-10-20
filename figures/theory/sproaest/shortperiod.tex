@@ -1,0 +1,45 @@
+\providecommand\angleofattack{\ensuremath{x_1}}
+\providecommand\pitchrate{\ensuremath{x_2}}
+
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+extra x ticks={5,15,25,45},
+extra x tick labels={},% = \num{16.1}$},
+extra x tick style={major grid style={dashed, color=black}},
+extra y ticks={-65.5531,-24.5822,24.5822,65.5531},
+extra y tick labels={},
+extra y tick style={major grid style={dashed, color=black}},
+%xtick={-75,-15,...,90},
+%ytick={-150,-75,...,150},
+xlabel={\angleofattack{} (\si{\degree})},
+ylabel={\pitchrate{} (\si{\degree\per\second})},
+xmajorgrids,
+ymajorgrids,
+x filter/.expression={180/3.14*x},
+y filter/.expression={180/3.14*y},
+ymin=-350,
+ymax=250,
+xmin=-50,
+xmax=60,
+view={0}{90},
+colormap/jet,
+]
+\addplot3[contour gnuplot, safeSetElps,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=alpha,y=q,z=P]{\data/safeset/stableset/shortperiod/splines.dat};
+
+
+\addplot3[contour gnuplot, safeSet, solid,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=alpha,y=q,z=Lya]{\data/safeset/stableset/shortperiod/splines.dat};
+
+
+\end{axis}
+\end{tikzpicture}

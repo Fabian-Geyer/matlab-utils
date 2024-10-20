@@ -1,0 +1,23 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+zmin=-0.025,
+zmax=2.025,
+%xlabel={$X$},
+%ylabel={$Y$},
+%zlabel={$f = X + Y$},
+xmajorgrids,
+ymajorgrids,
+zmajorgrids,
+unbounded coords=discard,
+]
+\addplot3[mark=ball,
+]
+table[x=X, y=Y, z=f1]{\data/identification/stochastics.dat};
+
+\end{axis}
+\end{tikzpicture}

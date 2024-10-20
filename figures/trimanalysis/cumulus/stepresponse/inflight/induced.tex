@@ -1,0 +1,133 @@
+\begin{tikzpicture}
+
+\begin{groupplot}[%
+group style={
+	group size=2 by 3,
+	horizontal sep=1pt,
+	vertical sep=1pt,
+	x descriptions at=edge bottom,
+	y descriptions at=edge left,
+},
+width=0.4\FigWidth,
+height=.33\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xtick={0,2,...,6},
+xlabel={time relative to step ($\si{\second}$)},
+ylabel={pitch angle ($\si{\degree}$)},
+grid=major,
+y filter/.expression={180/3.14*y},
+xmin=0,
+xmax=8,
+ymin=-35,
+ymax=90,
+%legend plot pos=none,
+cycle list name=color list,
+cycle list shift=-1,
+]
+
+\nextgroupplot
+\addplot[densely dashed,
+x filter/.expression={\thisrow{eta} != -6.632251e-01 ? nan : x},
+]
+table[x=time, y=Theta]{\data/trimanalysis/cumulus/stepresponse/induced/opt.dat};
+\label{plot:stepresponse-induced}
+\addlegendentry{$\eta_{t\geq0} = -\SI{38}{\degree}$}
+
+\foreach \i in {1,2}
+{
+	\addplot+[dashdotted, %forget plot,
+	x filter/.expression={\thisrow{plot} != \i ? nan : x},
+	]
+	table[x=dtime, y=theta]{\data/trimanalysis/cumulus/stepresponse/inflight.dat};
+	\addlegendentryexpanded{data set $\# \i$}
+}
+\label{plot:stepresponse-inflight}
+
+
+\nextgroupplot
+\addplot[densely dashed,
+x filter/.expression={\thisrow{eta} != -7.155850e-01 ? nan : x},
+]
+table[x=time, y=Theta]{\data/trimanalysis/cumulus/stepresponse/induced/opt.dat};
+\addlegendentry{$\eta_{t\geq0} = -\SI{41}{\degree}$}
+
+\foreach \i in {3,4}
+{
+	\addplot+[dashdotted, %forget plot,
+	x filter/.expression={\thisrow{plot} != \i ? nan : x},
+	]
+	table[x=dtime, y=theta]{\data/trimanalysis/cumulus/stepresponse/inflight.dat};
+	\addlegendentryexpanded{data set $\# \i$}
+}
+
+
+\nextgroupplot
+\addplot[densely dashed,
+x filter/.expression={\thisrow{eta} != -7.679449e-01 ? nan : x},
+]
+table[x=time, y=Theta]{\data/trimanalysis/cumulus/stepresponse/induced/opt.dat};
+\addlegendentry{$\eta_{t\geq0} = -\SI{44}{\degree}$}
+
+\foreach \i in {5,6}
+{
+	\addplot+[dashdotted, %forget plot,
+	x filter/.expression={\thisrow{plot} != \i ? nan : x},
+	]
+	table[x=dtime, y=theta]{\data/trimanalysis/cumulus/stepresponse/inflight.dat};
+	\addlegendentryexpanded{data set $\# \i$}
+}
+
+
+\nextgroupplot
+\addplot[densely dashed,
+x filter/.expression={\thisrow{eta} != -8.203047e-01 ? nan : x},
+]
+table[x=time, y=Theta]{\data/trimanalysis/cumulus/stepresponse/induced/opt.dat};
+\addlegendentry{$\eta_{t\geq0} = -\SI{47}{\degree}$}
+
+\foreach \i in {7,8}
+{
+	\addplot+[dashdotted, %forget plot,
+	x filter/.expression={\thisrow{plot} != \i ? nan : x},
+	]
+	table[x=dtime, y=theta]{\data/trimanalysis/cumulus/stepresponse/inflight.dat};
+	\addlegendentryexpanded{data set $\# \i$}
+}
+
+
+\nextgroupplot
+\addplot[densely dashed,
+x filter/.expression={\thisrow{eta} != -8.726646e-01 ? nan : x},
+]
+table[x=time, y=Theta]{\data/trimanalysis/cumulus/stepresponse/induced/opt.dat};
+\addlegendentry{$\eta_{t\geq0} = -\SI{50}{\degree}$}
+
+\foreach \i in {9,10}
+{
+	\addplot+[dashdotted, %forget plot,
+	x filter/.expression={\thisrow{plot} != \i ? nan : x},
+	]
+	table[x=dtime, y=theta]{\data/trimanalysis/cumulus/stepresponse/inflight.dat};
+	\addlegendentryexpanded{data set $\# \i$}
+}
+
+
+\nextgroupplot[xtick={0,2,...,8}]
+\addplot[densely dashed,
+x filter/.expression={\thisrow{eta} != -9.250245e-01 ? nan : x},
+]
+table[x=time, y=Theta]{\data/trimanalysis/cumulus/stepresponse/induced/opt.dat};
+\addlegendentry{$\eta_{t\geq0} = -\SI{53}{\degree}$}
+
+\foreach \i in {11,12}
+{
+	\addplot+[dashdotted, %forget plot,
+	x filter/.expression={\thisrow{plot} != \i ? nan : x},
+	]
+	table[x=dtime, y=theta]{\data/trimanalysis/cumulus/stepresponse/inflight.dat};
+	\addlegendentryexpanded{data set $\# \i$}
+}
+
+\end{groupplot}
+\end{tikzpicture}

@@ -1,0 +1,58 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={elevator deflection ($\si{\degree}$)},
+ylabel={pitch angle ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+y filter/.expression={180/3.14*y},
+unbounded coords=jump,
+xmin=-60,
+ymin=-141.5, %-138.8123,
+]
+\addplot[trimStable, forget plot,
+x filter/.expression={\thisrow{stab}==1 ? 180/3.14*x : nan},
+mark start,
+] 
+table[x=eta, y=Theta]{\data/trimanalysis/cumulus/zerothrust.dat};
+
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab}==1 && \thisrow{eta} > -.26 ? 180/3.14*x : nan},
+embrace={(1.south) -- (0.south) node[midway,below=1pt] {$A$}},
+] 
+table[x=eta, y=Theta]{\data/trimanalysis/cumulus/zerothrust.dat};
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab}==1 && \thisrow{eta} < -.26 && \thisrow{eta} > -.52 ? 180/3.14*x : nan},
+embrace={(1.south) -- (0.south east) node[midway,below right] {$B$}},
+] 
+table[x=eta, y=Theta]{\data/trimanalysis/cumulus/zerothrust.dat};
+
+\addplot[trimUnstable, forget plot,
+x filter/.expression={\thisrow{ustab}==1 && \thisrow{eta} < -.7 ? 180/3.14*x : nan},
+embrace={(1.south) -- (0.south) node[midway,below=1pt] {$C$}},
+] 
+table[x=eta, y=Theta]{\data/trimanalysis/cumulus/zerothrust.dat};
+
+
+\addplot[trimHopf, forget plot,
+x filter/.expression={\thisrow{stab}==1 && \thisrow{ustab}==1 ? 180/3.14*x : nan},
+] 
+table[x=eta, y=Theta]{\data/trimanalysis/cumulus/zerothrust.dat};
+
+
+%\addplot[color=black, trimStart, 
+%	skip coords between index={1}{10000},
+%	]
+%	table[x=V, y=alpha]{\data/trimanalysis/cumulus/zerothrust.dat};
+%	\label{plot:trimanalysis-poly-start}
+%\addlegendentry{starting point}
+
+
+\end{axis}
+\end{tikzpicture}%

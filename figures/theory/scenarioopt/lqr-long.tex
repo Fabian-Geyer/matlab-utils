@@ -1,0 +1,72 @@
+\begin{tikzpicture}
+
+\begin{groupplot}[%
+group style={
+	group size=4 by 1,
+	horizontal sep=1pt,
+	vertical sep=1pt,
+	x descriptions at=edge bottom,
+	y descriptions at=edge left,
+},
+width=0.4\FigWidth,
+height=0.5\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={$x_1$},
+ylabel={$x_2$},
+grid=both,
+view={0}{90},
+xmin = -3, xmax = 3,
+ymin = -10, ymax = 10,
+xtick = {-2.5,0,2.5},
+ytick = {-8,0,8},
+minor tick num = 1,
+empty legend,
+]
+
+\nextgroupplot
+\foreach \i in {1,2,3,4,5,6,7,8,9}
+{
+\addplot3[contour gnuplot, safeSet color=mycolor1, line width=0.5, %dashdotdotted,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=x, y=y, z=vbar]{\data/theory/scenarioopt/lqr/scenarioopt/1-\i.dat};
+
+\legend{$N_1 = 100$}
+}
+
+\nextgroupplot
+\foreach \i in {1,2,3,4,5,6,7,8,9}
+{
+\addplot3[contour gnuplot, safeSet color=mycolor2, line width=0.5, %dashdotted,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=x, y=y, z=vbar]{\data/theory/scenarioopt/lqr/scenarioopt/2.5-\i.dat};
+
+\legend{$N_1 = 250$}
+}
+
+\nextgroupplot
+\foreach \i in {1,2,3,4,5,6,7,8,9}
+{
+\addplot3[contour gnuplot, safeSet color=mycolor3, line width=0.5, %dashed,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=x, y=y, z=vbar]{\data/theory/scenarioopt/lqr/scenarioopt/5-\i.dat};
+
+\legend{$N_1 = 500$}
+}
+
+\nextgroupplot
+\foreach \i in {1,2,3,4,5,6,7,8,9}
+{
+\addplot3[contour gnuplot, safeSet color=mycolor5, line width=0.5, %solid,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=x, y=y, z=vbar]{\data/theory/scenarioopt/lqr/scenarioopt/10-\i.dat};
+
+\legend{$N_1 = 1000$}
+}
+
+\end{groupplot}
+\end{tikzpicture}

@@ -1,0 +1,52 @@
+\begin{tikzpicture}[auto, >=stealth']
+
+	\node[start] (start) at (0,0) {};
+	
+	\node[block, label=left:{1:}] (inputs) [below=of start, minimum width=5cm] {Inputs: $X_1, X_2, Z$};
+	
+	\node[dummy] (inputs south west) [left=of inputs.south] {};
+	\node[dummy] (inputs south east) [right=of inputs.south] {}; 
+	
+	\node[dummy] (constraints 1) [below=of inputs] {};
+	
+	\node[block, label=left:{2b:}] (continuity) [right=of constraints 1, minimum width=3.5cm] {compute $\mat{\mathcal{C}}$ for $x_0$};
+	
+	\node[block, label=left:{3:}] (objective) [below=of constraints 1, minimum width=5cm] {compute $\mat{C}_1, \mat{C}_2, \vec{d}$}; 
+	
+	\node[dummy] (objective north west) [left=of objective.north] {};
+	\node[dummy] (objective north east) [right=of objective.north] {};
+
+	\node[block, label=left:{4:}] (lsq) [below=of objective, minimum width=5cm] {solve $\lsq$ problem for $\vec{q}_1, \vec{q}_2$};
+	
+	\node[dummy] (lsq south west) [left=of lsq.south] {};
+	\node[dummy] (lsq south east) [right=of lsq.south] {};
+	
+	\node[dummy] (aftermath) [below=of lsq] {};
+	
+	\node[block, label=155:{5a:}] (boundary) [left=of aftermath, align=center, minimum width=3.5cm] {find $x_0$ s.t. \\ $\polynomial[n]{x_0}{\vec{q}_1 - \vec{q}_2} = 0$};
+	
+	\node[block, label=left:{6:}] (return) [below=of aftermath, minimum width=5cm] {return $\vec{q}_1, \vec{q}_2, x_0$};
+	
+	\node[dummy] (return north west) [left=of return.north] {};
+	\node[dummy] (return north east) [right=of return.north] {};
+	
+	\node[stop] (stop) [below=of return] {};
+	
+	\graph{
+		(start) -> (inputs);
+		(inputs south east) -> (continuity) -> (objective north east);
+		(inputs south west) ->[edge label={2a}, swap] (objective north west);
+		(objective) -> (lsq);
+		(lsq south west) -> (boundary) -> (return north west);
+		(lsq south east) ->[edge label={5b}] (return north east);
+		(return) -> (stop);
+	};
+	
+	\node[dummy] (title) [above=of start] {};
+%	\node[left=of title, text width=4cm, align=center] {\em a) without continuity constraint};
+%	\node[right=of title, text width=4cm, align=center] {\em b) with continuity constraint in $x_0$};
+	
+%	\node[dummy] () [above=of title] {};
+%	\node[dummy] () [below=of return] {};
+
+\end{tikzpicture}

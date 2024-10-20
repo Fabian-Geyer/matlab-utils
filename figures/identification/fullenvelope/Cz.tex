@@ -1,0 +1,41 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xmin=-15,
+xmax=90,
+extra x ticks={16.1108},
+extra x tick labels={$\alpha_0$},% = \num{16.1}$},
+extra x tick style={major grid style={continuity}},
+%extra y ticks={0},
+%extra y tick style={major grid style={zerocons}},
+xtick={-15,0,...,90},
+xticklabels={-15,0,$$,30,45,60,75,90},
+ytick={-45,0,45},
+xlabel={angle of attack ($\si{\degree}$)},
+ylabel={side-slip angle ($\si{\degree}$)},
+zlabel={coefficient \body{z}-axis ($\cdot$)},
+ylabel style={xshift=-2em},
+x filter/.expression={180/3.14*x},
+y filter/.expression={180/3.14*y},
+xmajorgrids,
+ymajorgrids,
+zmajorgrids,
+%restrict z to domain*=-0.25:0.5,
+%unbounded coords=jump,
+%zmin=-0.1,
+%zmax=0.25,
+]
+\addplot3[coeff3D,
+mesh/rows=101,
+z buffer=sort,
+] 
+table[x=alpha, y=beta, z=Cz]{\data/identification/fullenvelope.dat};
+%\label{plot:identification-comparison-pw}
+%\addlegendentry{piece-wise fit}
+
+\end{axis}
+\end{tikzpicture}

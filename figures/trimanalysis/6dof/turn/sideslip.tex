@@ -1,0 +1,31 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={airspeed ($\si{\metre\per\second}$)},
+ylabel={side-slip angle ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+x filter/.expression={\thisrow{plot} != 2 ? nan : x},
+y filter/.expression={180/3.14*y},
+xmin=24.3840,
+xmax=45.72,
+ymin=-10,
+ymax=10,
+]
+\addplot[trimBank, forget plot] 
+	table[x=V, y=beta]{\data/trimanalysis/6dof/V-mu.dat};
+
+
+\addplot[color=black, trimBankLow, 
+	skip coords between index={1}{10000},
+	]
+	table[x=V, y=beta]{\data/trimanalysis/6dof/V-mu.dat};
+	\label{plot:trimanalysis-start}
+
+
+\end{axis}
+\end{tikzpicture}%

@@ -1,0 +1,58 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={$x_1$},
+ylabel={$x_2$},
+xmajorgrids,
+ymajorgrids,
+xmin=-1.25,
+xmax=1.25,
+ymin=-2.25,
+ymax=2.25,
+view={0}{90},
+colormap/jet,
+legend to name=feasible-vanderpol,
+legend cell align=left,
+legend columns=3,
+legend style={font=\footnotesize},
+]
+\addplot3[contour gnuplot, safeSet color=mycolor1, solid,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=x1, y=x2, z=Vin]{\data/theory/feasible/vanderpol.dat};
+\addlegendentry{inner approximation}
+
+\addlegendspace
+
+\addplot3[contour gnuplot, safeSet color=mycolor2, solid,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=x1, y=x2, z=p]{\data/theory/feasible/vanderpol/constraints.dat};
+\addlegendentry{terminal set}
+
+\addplot3[contour gnuplot, safeSet color=mycolor1, dashed,
+mesh/rows=100, mesh/cols=100
+]
+table[x=x1, y=x2, z=Vout]{\data/theory/feasible/vanderpol.dat};
+\addlegendentry{outer approximation}
+
+\addlegendspace
+
+\addplot3[contour gnuplot, safeSet color=mycolor3, dashdotted,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=x1, y=x2, z=V]{\data/theory/feasible/vanderpol/viscosity.dat};
+\addlegendentry{viscosity solution}
+
+
+\addplot3[contour gnuplot, safeSetElps, line width=0.5pt,
+mesh/rows=100, mesh/cols=100, forget plot,
+]
+table[x=x1, y=x2, z=g]{\data/theory/feasible/vanderpol/constraints.dat};
+
+\end{axis}
+\end{tikzpicture}

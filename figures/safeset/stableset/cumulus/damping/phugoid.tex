@@ -1,0 +1,70 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xtick={0,2.5,...,20},
+ytick={-60,-45,...,45},
+xlabel={airspeed ($\si{\metre\per\second}$)},
+ylabel={path inclination ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+x filter/.expression={x + 11.3631},
+y filter/.expression={y - 2.2834},
+ymin=-45,
+ymax=30,
+xmin=6,
+xmax=18,
+view={0}{90},
+point meta min=-60,
+point meta max=20,
+colormap/jet,
+legend columns=5,
+legend cell align=left,
+legend to name=legend-stableset-damping,
+]
+\addplot3[contour gnuplot, safePW,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=V,y=gamma,z=Lya-1]{\data/safeset/stableset/cumulus/damping/phugoid.dat};
+\addlegendentry{invariant subset ($\alpha \leq \alpha_0$)}
+
+\addlegendspace
+
+\addplot3[contour gnuplot, safePW, dashdotdotted,
+mesh/rows=100, mesh/cols=100,
+forget plot,
+]
+table[x=V,y=gamma,z=Lya-2]{\data/safeset/stableset/cumulus/damping/phugoid.dat};
+
+\addplot3[contour gnuplot, safeSetElps,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=V,y=gamma,z=P]{\data/safeset/stableset/cumulus/damping/phugoid.dat};
+\addlegendentry{ellipsoidal shape}
+
+\addlegendspace
+
+\addplot3[safeEqu]
+coordinates{ (0,0,0) };
+\addlegendentry{trim condition}
+
+
+\addlegendpair[safePW, dashdotdotted]{invariant subset ($\alpha > \alpha_0$)}
+
+\addlegendspace
+
+% no elevator deflection in phugoid plane
+% for pitch-rate damping feedback
+%\addplot3[contour gnuplot, dashdotted,
+%contour/levels={-50,-40,-30,-20,-10,0,10,20},
+%mesh/rows=100, mesh/cols=100,
+%]
+%table[x=V,y=gamma,z=k]{\data/safeset/stableset/cumulus/damping/phugoid.dat};
+\addlegendpair[dashdotted, contour label legend]{elevator deflection (\si{\degree})}
+
+
+\end{axis}
+\end{tikzpicture}

@@ -1,0 +1,70 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xlabel={airspeed ($\si{\metre\per\second}$)},
+ylabel={path inclination ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+x filter/.expression={x + 13},
+y filter/.expression={y - 0},
+ymin=-35,
+ymax=30,
+xmin=8,
+xmax=18,
+view={0}{90},
+point meta min=-200,
+point meta max=200,
+colormap/redyellow,
+legend columns=-1,
+legend cell align=left,
+legend to name=legend-stableset-nominal,
+]
+\addplot3[contour gnuplot, safePW,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=V,y=gamma,z=Lya]{\data/safeset/stableset/cumulus/nominal/phugoid.dat};
+%\label{plot:longitudinal-shortperiod}
+\addlegendentry{invariant subset}
+
+\addlegendspace
+
+%\addplot3[contour gnuplot, safePW, dashdotdotted,
+%mesh/rows=100, mesh/cols=100,
+%forget plot,
+%]
+%table[x=V,y=gamma,z=Lya-2]{\data/safeset/stableset/cumulus/nominal/phugoid.dat};
+%%\label{plot:longitudinal-shortperiod-2}
+
+\addplot3[contour gnuplot, safeSetElps,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=V,y=gamma,z=P]{\data/safeset/stableset/cumulus/nominal/phugoid.dat};
+\addlegendentry{ellipsoidal shape}
+
+\addlegendspace
+
+\addplot3[safeEqu]
+coordinates{ (0,0,0) };
+\addlegendentry{trim condition}
+
+
+%\addlegendpair[safePW, dashdotdotted]{invariant subset ($\alpha > \alpha_0$)}
+
+\addlegendspace
+
+\addplot3[contour gnuplot, dashdotted,
+contour/levels={-125,-100,-75,-50,-25,0,25,50,75,100},
+mesh/rows=100, mesh/cols=100,
+forget plot,
+]
+table[x=V,y=gamma,z=k]{\data/safeset/stableset/cumulus/nominal/phugoid.dat};
+
+\addlegendpair[dashdotted, contour label legend, red!60!yellow]{actuator rate (\si{\degree\per\second})}
+
+
+\end{axis}
+\end{tikzpicture}

@@ -1,0 +1,62 @@
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xtick=0,
+ytick=0,
+ztick=0,
+xlabel={$\mu^\ast$},
+ylabel={$x_1$},
+zlabel={$x_2$},
+grid=major,
+xmin=-3.1,
+xmax=3.2,
+legend cell align=left,
+legend pos=north west,
+]
+\addplot3[trimStable,
+x filter/.expression={\thisrow{stab} != 1 ? nan : x},
+] 
+table[x=p, y=x1, z=x2]{\data/theory/bifurcation/hopf.dat};
+\addlegendentry{stable}
+
+\addplot3[trimUnstable,
+x filter/.expression={\thisrow{ustab} != 1 ? nan : x},
+]
+table[x=p, y=x1, z=x2]{\data/theory/bifurcation/hopf.dat};
+\addlegendentry{unstable}
+
+\addplot3[trimOrbit, solid,
+forget plot,
+postaction={decorate},
+decoration={markings,
+	mark=at position 0 with {\arrow{stealth}},
+	mark=at position 0.25 with {\arrow{stealth}},
+	mark=at position 0.5 with {\arrow{stealth}},
+	mark=at position 0.75 with {\arrow{stealth}}
+},
+]
+table[x=p, y=x1, z=x2]{\data/theory/bifurcation/hopf/orbit.dat};
+
+\addplot3[trimOrbit, solid,
+forget plot,
+]
+table[x=p, y=x1, z expr={0}]{\data/theory/bifurcation/hopf/limit.dat};
+
+\addplot3[trimOrbit, solid,
+forget plot,
+]
+table[x=p, y expr={0}, z=x2]{\data/theory/bifurcation/hopf/limit.dat};
+
+\addplot3[trimHopf,
+x filter/.expression={\thisrow{stab} != 1 || \thisrow{ustab} != 1 ? nan : x},
+]
+table[x=p, y=x1, z=x2]{\data/theory/bifurcation/hopf.dat};
+\label{plot:bifurcation-hopf}
+\addlegendentry{HB}
+
+\end{axis}
+\end{tikzpicture}%

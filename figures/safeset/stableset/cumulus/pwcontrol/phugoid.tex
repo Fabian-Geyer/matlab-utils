@@ -1,0 +1,75 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+width=0.8\FigWidth,
+height=\FigHeight,
+at={(0\FigWidth,0\FigHeight)},
+scale only axis,
+xtick={0,5,...,30},
+ytick={-60,-45,...,90},
+xlabel={airspeed ($\si{\metre\per\second}$)},
+ylabel={path inclination ($\si{\degree}$)},
+xmajorgrids,
+ymajorgrids,
+x filter/.expression={x + 11.3631},
+y filter/.expression={y - 2.2834},
+ymin=-75,
+ymax=60,
+xmin=1,
+xmax=21,
+view={0}{90},
+point meta min=-200,
+point meta max=200,
+colormap/jet,
+legend columns=5,
+legend cell align=left,
+legend to name=legend-stableset-pwcontrol,
+]
+\addplot3[contour gnuplot, safePW,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=V,y=gamma,z=Lya-1]{\data/safeset/stableset/cumulus/pwcontrol/phugoid.dat};
+%\label{plot:longitudinal-shortperiod}
+\addlegendentry{invariant subset ($\alpha \leq \alpha_0$)}
+
+\addlegendspace
+
+\addplot3[contour gnuplot, safePW, dashdotdotted,
+mesh/rows=100, mesh/cols=100,
+forget plot,
+]
+table[x=V,y=gamma,z=Lya-2]{\data/safeset/stableset/cumulus/pwcontrol/phugoid.dat};
+%\label{plot:longitudinal-shortperiod-2}
+
+\addplot3[contour gnuplot, safeSetElps,
+mesh/rows=100, mesh/cols=100,
+]
+table[x=V,y=gamma,z=P]{\data/safeset/stableset/cumulus/pwcontrol/phugoid.dat};
+\addlegendentry{ellipsoidal shape}
+
+\addlegendspace
+
+\addplot3[contour gnuplot, dashdotted,
+contour/levels={-200,-175,-150,-125,-100,-75,-50,-25,0,25,50,75,100,125,150},
+mesh/rows=100, mesh/cols=100,
+forget plot,
+]
+table[x=V,y=gamma,z=k-1]{\data/safeset/stableset/cumulus/pwcontrol/phugoid.dat};
+
+\addlegendpair[dashdotted, contour label legend, red!60!yellow]{actuator rate (\si{\degree\per\second}, $\alpha \leq \alpha_0$)}
+
+\addlegendpair[safePW, dashdotdotted]{invariant subset ($\alpha > \alpha_0$)}
+
+\addlegendspace
+
+\addplot3[safeEqu]
+coordinates{ (0,0,0) };
+\addlegendentry{trim condition}
+
+\addlegendspace
+
+\addlegendpair[dashed, contour label legend, red!60!yellow]{actuator rate (\si{\degree\per\second}, $\alpha > \alpha_0$)}
+
+
+\end{axis}
+\end{tikzpicture}
