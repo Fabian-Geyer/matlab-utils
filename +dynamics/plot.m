@@ -1,4 +1,4 @@
-function [fig_handle] = plot(t, y, labels)
+function [fig_handle] = plot(t, y, labels, options)
 % Inputs:
 %   - y: k*n matrix where k is the number of time steps and n is the number of states
 %   - labels: cell array with string labels for each state
@@ -8,6 +8,7 @@ arguments
     t (:,1) double
     y (:,:) double
     labels cell
+    options.figID char = 'dynamics plot'
 end
 
 % Check that the number of columns in y matches the number of labels
@@ -16,7 +17,7 @@ if size(y, 2) ~= numel(labels)
 end
 
 % Plot results
-fig_handle = hfigure('dynamics plot');
+fig_handle = hfigure(options.figID);
 plot(t, y, 'LineWidth', 1.5);
 grid on;
 xlabel('Time (s)', 'Interpreter','latex'); xlim([min(t), max(t)])
