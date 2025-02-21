@@ -5,8 +5,8 @@ arguments
     alpha (1,1) {ssmu.input_validation.mustBeNumericOrSymbolicOrCasadi}
 end
 
-T1 = [cos(alpha), sin(alpha), 0;
-     -sin(alpha), cos(alpha), 0;
-     0,           0,          1];
+T1 = [1,          0,          0;
+      0, cos(alpha), sin(alpha);
+      0,-sin(alpha), cos(alpha)];
 
 end
