@@ -1,2 +1,0 @@
-# Symbolic Space Math Utilities
-This toolbox provides a collection of mathematical tools required for space and satellite applications. Not only can functions handle numerical values, but also symbolic inputs.
